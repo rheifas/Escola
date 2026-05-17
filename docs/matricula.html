@@ -12,7 +12,9 @@
 <body class="matricula">
 
     <header>
-        <a href="index.html"><h1>Colégio CSEI</h1></a>
+        <a href="index.html">
+            <h1>Colégio CSEI</h1>
+        </a>
         <nav>
             <span class="header-pagina">Página de Matrícula</span>
         </nav>
@@ -30,7 +32,8 @@
 
                     <div class="form-grupo">
                         <label for="nomeAluno">Nome completo *</label>
-                        <input type="text" id="nomeAluno" name="nomeAluno" placeholder="Nome completo do aluno" required>
+                        <input type="text" id="nomeAluno" name="nomeAluno" placeholder="Nome completo do aluno"
+                            required>
                     </div>
 
                     <div class="form-linha">
@@ -52,12 +55,10 @@
                     <div class="form-linha">
                         <div class="form-grupo">
                             <label for="cpfAluno">CPF do aluno</label>
-                            <input type="text" id="cpfAluno" name="cpfAluno" placeholder="000.000.000-00" maxlength="14">
+                            <input type="text" id="cpfAluno" name="cpfAluno" placeholder="000.000.000-00"
+                                maxlength="14">
                         </div>
-                        <div class="form-grupo">
-                            <label for="rg">RG do aluno</label>
-                            <input type="text" id="rg" name="rg" placeholder="0000000-0">
-                        </div>
+
                     </div>
 
                     <div class="form-linha">
@@ -96,10 +97,7 @@
                         </div>
                     </div>
 
-                    <div class="form-grupo">
-                        <label for="escolaAnterior">Escola anterior</label>
-                        <input type="text" id="escolaAnterior" name="escolaAnterior" placeholder="Nome da escola anterior (se houver)">
-                    </div>
+
 
                 </fieldset>
 
@@ -146,7 +144,8 @@
 
                     <div class="form-grupo">
                         <label for="nomeResp">Nome completo do responsável *</label>
-                        <input type="text" id="nomeResp" name="nomeResp" placeholder="Nome completo do responsável" required>
+                        <input type="text" id="nomeResp" name="nomeResp" placeholder="Nome completo do responsável"
+                            required>
                     </div>
 
                     <div class="form-linha">
@@ -163,14 +162,16 @@
                         </div>
                         <div class="form-grupo">
                             <label for="cpfResp">CPF do responsável *</label>
-                            <input type="text" id="cpfResp" name="cpfResp" placeholder="000.000.000-00" maxlength="14" required>
+                            <input type="text" id="cpfResp" name="cpfResp" placeholder="000.000.000-00" maxlength="14"
+                                required>
                         </div>
                     </div>
 
                     <div class="form-linha">
                         <div class="form-grupo">
                             <label for="telefone">Telefone / WhatsApp *</label>
-                            <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" maxlength="15" required>
+                            <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" maxlength="15"
+                                required>
                         </div>
                         <div class="form-grupo">
                             <label for="email">E-mail *</label>
@@ -185,39 +186,10 @@
 
                 </fieldset>
 
-                <fieldset>
-                    <legend>Informações de Saúde</legend>
-
-                    <div class="form-grupo">
-                        <label for="tipoSangue">Tipo sanguíneo</label>
-                        <select id="tipoSangue" name="tipoSangue">
-                            <option value="">Não informado</option>
-                            <option>A+</option>
-                            <option>A-</option>
-                            <option>B+</option>
-                            <option>B-</option>
-                            <option>AB+</option>
-                            <option>AB-</option>
-                            <option>O+</option>
-                            <option>O-</option>
-                        </select>
-                    </div>
-
-                    <div class="form-grupo">
-                        <label for="alergias">Alergias ou condições de saúde relevantes</label>
-                        <textarea id="alergias" name="alergias" rows="3" placeholder="Ex: alergia a amendoim, asma, uso de medicamento contínuo..."></textarea>
-                    </div>
-
-                    <div class="form-grupo">
-                        <label for="planoSaude">Plano de saúde</label>
-                        <input type="text" id="planoSaude" name="planoSaude" placeholder="Nome do plano (se houver)">
-                    </div>
-
-                </fieldset>
-
                 <div class="form-aceite">
                     <input type="checkbox" id="aceite" name="aceite" required>
-                    <label for="aceite">Declaro que as informações fornecidas são verdadeiras e concordo com o regulamento interno do Colégio CSEI.</label>
+                    <label for="aceite">Declaro que as informações fornecidas são verdadeiras e concordo com o
+                        regulamento interno do Colégio CSEI.</label>
                 </div>
 
                 <button type="submit" class="btn-enviar">Enviar solicitação de matrícula</button>
