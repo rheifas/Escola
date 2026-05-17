@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página do Aluno</title>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/pag_professor.css">
+</head>
+
+<body class="pag_professor">
+
+    <header>
+        <a href="index.html"><h1>Colégio CSEI</h1></a>
+        <nav>
+            <span class="header-pagina">Página do Professor</span>
+        </nav>
+    </header>
+
+    <div class="aluno-wrapper">
+
+        <aside class="sidebar" id="sidebar">
+            <button class="toggle-btn" id="toggleBtn" aria-label="Minimizar menu">&#8249;</button>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-target="informacoes">
+                    <span class="nav-icon">📋</span>
+                    <span class="nav-label">Informações</span>
+                </a>
+                <a href="#" class="nav-item" data-target="disciplinas">
+                    <span class="nav-icon">📚</span>
+                    <span class="nav-label">Disciplinas</span>
+                </a>
+                <a href="#" class="nav-item" data-target="grade">
+                    <span class="nav-icon">🕐</span>
+                    <span class="nav-label">Grade Horária</span>
+                </a>                
+                </a>
+                <a href="#" class="nav-item" data-target="calendario">
+                    <span class="nav-icon">📆</span>
+                    <span class="nav-label">Calendário Letivo</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main class="aluno-content">
+
+            <section class="pagina active" id="informacoes">
+                <h2>Informações</h2>
+                <p>Dados do aluno aqui...</p>
+            </section>
+        
+            <section class="pagina" id="disciplinas">
+                <h2>Disciplinas</h2>
+                <p>Lista de disciplinas aqui...</p>
+            </section>
+        
+            <section class="pagina" id="grade">
+                <h2>Grade Horária</h2>
+                <p>Grade horária aqui...</p>
+            </section>
+        
+            <section class="pagina" id="agendamento">
+                <h2>Agendamento</h2>
+                <p>Agendamentos aqui...</p>
+            </section>
+        
+            <section class="pagina" id="rematricula">
+                <h2>Rematrícula</h2>
+                <p>Rematrícula aqui...</p>
+            </section>
+        
+            <section class="pagina" id="calendario">
+                <h2>Calendário Letivo</h2>
+                <p>Calendário aqui...</p>
+            </section>
+        
+        </main>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Colégio CSEI — Salvador, BA</p>
+    </footer>
+
+    <script src="js/pag_aluno.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,52 @@
+.bodyinicial {
+    background-color: #f4f4f4;
+    padding-bottom: 54px;
+}
+
+.hero {
+    /*imagem*/
+    background-size: cover;
+    background-position: center;
+    height: calc(100vh - 70px - 54px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-overlay {
+    background-color: rgba(0, 0, 0, 0.55);
+    color: #ffffff;
+    text-align: center;
+    padding: 50px 60px;
+    border-radius: 10px;
+    max-width: 680px;
+}
+
+.hero-overlay h2 {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 18px;
+}
+
+.hero-overlay p {
+    font-size: 17px;
+    line-height: 1.7;
+    margin-bottom: 28px;
+    color: #e8e8e8;
+}
+
+.btn-hero {
+    background-color: rgb(126, 19, 19);
+    color: #ffffff;
+    border: none;
+    padding: 14px 36px;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-hero:hover {
+    background-color: rgb(100, 14, 14);
+}

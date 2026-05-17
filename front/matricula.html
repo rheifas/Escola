@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colégio CSEI — Matrícula</title>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/matricula.css">
+</head>
+
+<body class="matricula">
+
+    <header>
+        <a href="index.html"><h1>Colégio CSEI</h1></a>
+        <nav>
+            <span class="header-pagina">Página de Matrícula</span>
+        </nav>
+    </header>
+
+    <main class="matricula-main">
+        <div class="form-container">
+            <h2>Formulário de Matrícula</h2>
+            <p class="form-subtitulo">Preencha todos os campos abaixo para realizar a matrícula do aluno.</p>
+
+            <form id="formMatricula">
+
+                <fieldset>
+                    <legend>Dados do Aluno</legend>
+
+                    <div class="form-grupo">
+                        <label for="nomeAluno">Nome completo *</label>
+                        <input type="text" id="nomeAluno" name="nomeAluno" placeholder="Nome completo do aluno" required>
+                    </div>
+
+                    <div class="form-linha">
+                        <div class="form-grupo">
+                            <label for="nascimento">Data de nascimento *</label>
+                            <input type="date" id="nascimento" name="nascimento" required>
+                        </div>
+                        <div class="form-grupo">
+                            <label for="sexo">Sexo *</label>
+                            <select id="sexo" name="sexo" required>
+                                <option value="">Selecione</option>
+                                <option value="M">Masculino</option>
+                                <option value="F">Feminino</option>
+                                <option value="O">Outro</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-linha">
+                        <div class="form-grupo">
+                            <label for="cpfAluno">CPF do aluno</label>
+                            <input type="text" id="cpfAluno" name="cpfAluno" placeholder="000.000.000-00" maxlength="14">
+                        </div>
+                        <div class="form-grupo">
+                            <label for="rg">RG do aluno</label>
+                            <input type="text" id="rg" name="rg" placeholder="0000000-0">
+                        </div>
+                    </div>
+
+                    <div class="form-linha">
+                        <div class="form-grupo">
+                            <label for="serie">Série / Ano pretendido *</label>
+                            <select id="serie" name="serie" required>
+                                <option value="">Selecione</option>
+                                <optgroup label="Ensino Fundamental I">
+                                    <option value="1ano">1º Ano</option>
+                                    <option value="2ano">2º Ano</option>
+                                    <option value="3ano">3º Ano</option>
+                                    <option value="4ano">4º Ano</option>
+                                    <option value="5ano">5º Ano</option>
+                                </optgroup>
+                                <optgroup label="Ensino Fundamental II">
+                                    <option value="6ano">6º Ano</option>
+                                    <option value="7ano">7º Ano</option>
+                                    <option value="8ano">8º Ano</option>
+                                    <option value="9ano">9º Ano</option>
+                                </optgroup>
+                                <optgroup label="Ensino Médio">
+                                    <option value="1em">1ª Série</option>
+                                    <option value="2em">2ª Série</option>
+                                    <option value="3em">3ª Série</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="form-grupo">
+                            <label for="turno">Turno *</label>
+                            <select id="turno" name="turno" required>
+                                <option value="">Selecione</option>
+                                <option value="M">Matutino</option>
+                                <option value="V">Vespertino</option>
+                                <option value="N">Noturno</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-grupo">
+                        <label for="escolaAnterior">Escola anterior</label>
+                        <input type="text" id="escolaAnterior" name="escolaAnterior" placeholder="Nome da escola anterior (se houver)">
+                    </div>
+
+                </fieldset>
+
+                <fieldset>
+                    <legend>Endereço do Aluno</legend>
+
+                    <div class="form-linha">
+                        <div class="form-grupo">
+                            <label for="cep">CEP *</label>
+                            <input type="text" id="cep" name="cep" placeholder="00000-000" maxlength="9" required>
+                        </div>
+                        <div class="form-grupo">
+                            <label for="cidade">Cidade *</label>
+                            <input type="text" id="cidade" name="cidade" placeholder="Cidade" required>
+                        </div>
+                    </div>
+
+                    <div class="form-linha">
+                        <div class="form-grupo flex-3">
+                            <label for="logradouro">Logradouro *</label>
+                            <input type="text" id="logradouro" name="logradouro" placeholder="Rua, Avenida..." required>
+                        </div>
+                        <div class="form-grupo flex-1">
+                            <label for="numero">Número *</label>
+                            <input type="text" id="numero" name="numero" placeholder="Nº" required>
+                        </div>
+                    </div>
+
+                    <div class="form-linha">
+                        <div class="form-grupo">
+                            <label for="bairro">Bairro *</label>
+                            <input type="text" id="bairro" name="bairro" placeholder="Bairro" required>
+                        </div>
+                        <div class="form-grupo">
+                            <label for="complemento">Complemento</label>
+                            <input type="text" id="complemento" name="complemento" placeholder="Apto, bloco...">
+                        </div>
+                    </div>
+
+                </fieldset>
+
+                <fieldset>
+                    <legend>Dados do Responsável</legend>
+
+                    <div class="form-grupo">
+                        <label for="nomeResp">Nome completo do responsável *</label>
+                        <input type="text" id="nomeResp" name="nomeResp" placeholder="Nome completo do responsável" required>
+                    </div>
+
+                    <div class="form-linha">
+                        <div class="form-grupo">
+                            <label for="parentesco">Parentesco *</label>
+                            <select id="parentesco" name="parentesco" required>
+                                <option value="">Selecione</option>
+                                <option value="pai">Pai</option>
+                                <option value="mae">Mãe</option>
+                                <option value="avo">Avó / Avô</option>
+                                <option value="tio">Tio / Tia</option>
+                                <option value="outro">Outro</option>
+                            </select>
+                        </div>
+                        <div class="form-grupo">
+                            <label for="cpfResp">CPF do responsável *</label>
+                            <input type="text" id="cpfResp" name="cpfResp" placeholder="000.000.000-00" maxlength="14" required>
+                        </div>
+                    </div>
+
+                    <div class="form-linha">
+                        <div class="form-grupo">
+                            <label for="telefone">Telefone / WhatsApp *</label>
+                            <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" maxlength="15" required>
+                        </div>
+                        <div class="form-grupo">
+                            <label for="email">E-mail *</label>
+                            <input type="email" id="email" name="email" placeholder="email@exemplo.com" required>
+                        </div>
+                    </div>
+
+                    <div class="form-grupo">
+                        <label for="profissao">Profissão</label>
+                        <input type="text" id="profissao" name="profissao" placeholder="Profissão do responsável">
+                    </div>
+
+                </fieldset>
+
+                <fieldset>
+                    <legend>Informações de Saúde</legend>
+
+                    <div class="form-grupo">
+                        <label for="tipoSangue">Tipo sanguíneo</label>
+                        <select id="tipoSangue" name="tipoSangue">
+                            <option value="">Não informado</option>
+                            <option>A+</option>
+                            <option>A-</option>
+                            <option>B+</option>
+                            <option>B-</option>
+                            <option>AB+</option>
+                            <option>AB-</option>
+                            <option>O+</option>
+                            <option>O-</option>
+                        </select>
+                    </div>
+
+                    <div class="form-grupo">
+                        <label for="alergias">Alergias ou condições de saúde relevantes</label>
+                        <textarea id="alergias" name="alergias" rows="3" placeholder="Ex: alergia a amendoim, asma, uso de medicamento contínuo..."></textarea>
+                    </div>
+
+                    <div class="form-grupo">
+                        <label for="planoSaude">Plano de saúde</label>
+                        <input type="text" id="planoSaude" name="planoSaude" placeholder="Nome do plano (se houver)">
+                    </div>
+
+                </fieldset>
+
+                <div class="form-aceite">
+                    <input type="checkbox" id="aceite" name="aceite" required>
+                    <label for="aceite">Declaro que as informações fornecidas são verdadeiras e concordo com o regulamento interno do Colégio CSEI.</label>
+                </div>
+
+                <button type="submit" class="btn-enviar">Enviar solicitação de matrícula</button>
+
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Colégio CSEI — Salvador, BA</p>
+    </footer>
+
+</body>
+
+</html>

@@ -1,0 +1,119 @@
+.pag_aluno {
+    background-color: #f4f4f4;
+    padding-bottom: 54px;
+}
+
+.aluno-wrapper {
+    display: flex;
+    height: calc(100vh - 70px - 54px);
+    position: relative;
+}
+
+/*menir lateral*/
+
+.sidebar {
+    width: 200px;
+    min-width: 200px;
+    background-color: #d6d6d6;
+    border-right: 1px solid #bbb;
+    display: flex;
+    flex-direction: column;
+    transition: width 0.28s ease, min-width 0.28s ease;
+    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.sidebar.collapsed {
+    width: 50px;
+    min-width: 50px;
+}
+
+.toggle-btn {
+    position: absolute;
+    top: 12px;
+    right: 10px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background-color: rgb(126, 19, 19);
+    border: none;
+    color: #ffffff;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.28s ease, right 0.28s ease;
+    z-index: 10;
+    flex-shrink: 0;
+}
+
+.sidebar.collapsed .toggle-btn {
+    transform: rotate(180deg);
+    right: 12px;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    margin-top: 52px;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 14px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #2c2c2c;
+    text-decoration: none;
+    border-bottom: 1px solid #bbb;
+    white-space: nowrap;
+    transition: background-color 0.15s;
+}
+
+.nav-item:hover {
+    background-color: #c4c4c4;
+}
+
+.nav-item.active {
+    background-color: rgb(126, 19, 19);
+    color: #ffffff;
+}
+
+.nav-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+    width: 22px;
+    text-align: center;
+}
+
+.nav-label {
+    opacity: 1;
+    transition: opacity 0.2s ease;
+}
+
+.sidebar.collapsed .nav-label {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.aluno-content {
+    flex: 1;
+    padding: 32px;
+    overflow-y: auto;
+    background-color: #ffffff;
+    color: #444;
+    font-size: 15px;
+}
+
+.pagina {
+    display: none;
+}
+
+.pagina.active {
+    display: block;
+}
