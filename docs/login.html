@@ -16,13 +16,14 @@
             <h1>Colégio CSEI</h1>
         </a>
         <nav>
-            <a href="#">Matrícula</a>
+            <a href="matricula.html">Matrícula</a>
             <a href="login.html">Login</a>
         </nav>
     </header>
 
     <main class="login-main">
         <section class="login-left">
+            
             <div class="login-base">
                 <h2>Login</h2>
                 <form>
@@ -34,10 +35,10 @@
                         <label for="senha">SENHA:</label>
                         <input type="password" id="senha" name="password" placeholder="****" required>
                     </div>
-                    <a href="#" class="esqueci">Esqueci a Senha</a>
+                    <a href="#" class="esqueci" id="btnEsqueci">Esqueci a Senha</a>
                     <input type="submit" value="ENTRAR">
                 </form>
-                <a href="#" class="cadastro">Cadastre-se</a>
+                <a href="cadastro.html" class="cadastro">Cadastre-se</a>
             </div>
 
         </section>
@@ -48,6 +49,36 @@
     <footer>
         <p>&copy; 2025 Colégio CSEI — Salvador, BA</p>
     </footer>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+
+            <div id="etapa1">
+                <h3>Recuperar senha</h3>
+                <p>Digite o e-mail cadastrado na sua conta. Enviaremos um código de uso único para você redefinir sua senha ou entre em contato com o colégio CSEI.</p>
+                <div class="modal-campo">
+                    <label for="emailRecupera">E-mail *</label>
+                    <input type="email" id="emailRecupera" placeholder="email@exemplo.com">
+                    <span class="modal-erro" id="erroEmail"></span>
+                </div>
+                <div class="modal-acoes">
+                    <button type="button" class="btn-cancelar" id="btnCancelar">Cancelar</button>
+                    <button type="button" class="btn-enviar-modal" id="btnEnviarCodigo">Enviar código</button>
+                </div>
+            </div>
+
+            <div id="etapa2" class="hidden">
+                <div class="sucesso-icone">✓</div>
+                <h3>Código enviado!</h3>
+                <p>Um código de autenticação de uso único foi enviado para <strong id="emailConfirmado"></strong>. Verifique sua caixa de entrada e também a pasta de spam.</p>
+                <p class="modal-obs">O código expira em <strong>10 minutos</strong>.</p>
+                <button type="button" class="btn-enviar-modal" id="btnFechar">Entendido</button>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="js/esqueci.js"></script>
 
 </body>
 

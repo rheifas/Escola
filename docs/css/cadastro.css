@@ -1,0 +1,241 @@
+.cadastro {
+    background-color: #f4f4f4;
+    padding-bottom: 54px;
+}
+
+.cadastro-main {
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.form-container {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 40px;
+    width: 100%;
+    max-width: 800px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    margin-bottom: 20px;
+}
+
+.form-container h2 {
+    font-size: 26px;
+    font-weight: 700;
+    color: rgb(126, 19, 19);
+    margin-bottom: 6px;
+}
+
+.form-subtitulo {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 32px;
+}
+
+fieldset {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 28px;
+}
+
+legend {
+    font-size: 15px;
+    font-weight: 700;
+    color: rgb(126, 19, 19);
+    padding: 0 10px;
+}
+
+.form-grupo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+    margin-bottom: 16px;
+}
+
+.form-linha {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.form-linha .form-grupo {
+    margin-bottom: 0;
+}
+
+.flex-1 {
+    flex: 1;
+}
+
+.flex-3 {
+    flex: 3;
+}
+
+label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #444;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="email"],
+input[type="tel"],
+input[type="password"],
+select,
+textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #333;
+    background-color: #fafafa;
+    transition: border-color 0.2s;
+    font-family: Arial, Helvetica, sans-serif;
+    box-sizing: border-box;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: rgb(126, 19, 19);
+    background-color: #fff;
+}
+
+.input-senha-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-senha-wrapper input {
+    padding-right: 42px;
+}
+
+.btn-toggle-senha {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #888;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+}
+
+.btn-toggle-senha:hover {
+    opacity: 1;
+    color: rgb(126, 19, 19);
+}
+
+.forca-senha {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+    flex-wrap: wrap;
+}
+
+.forca-label {
+    font-size: 12px;
+    color: #666;
+    font-weight: 600;
+}
+
+.forca-barras {
+    display: flex;
+    gap: 4px;
+}
+
+.barra {
+    width: 36px;
+    height: 5px;
+    border-radius: 3px;
+    background-color: #e2e8f0;
+    transition: background-color 0.3s;
+}
+
+.forca-texto {
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.msg-erro {
+    font-size: 12px;
+    color: #e53e3e;
+    font-weight: 600;
+    min-height: 16px;
+}
+
+.form-aceite {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 28px;
+    font-size: 13px;
+    color: #555;
+}
+
+.form-aceite input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+    accent-color: rgb(126, 19, 19);
+    flex-shrink: 0;
+}
+
+.form-aceite label a {
+    color: rgb(126, 19, 19);
+    text-decoration: underline;
+}
+
+.btn-enviar {
+    width: 100%;
+    padding: 14px;
+    background-color: rgb(126, 19, 19);
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.btn-enviar:hover {
+    background-color: rgb(100, 14, 14);
+}
+
+.link-login {
+    text-align: center;
+    font-size: 13px;
+    color: #666;
+    margin-top: 16px;
+}
+
+.link-login a {
+    color: rgb(126, 19, 19);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.link-login a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+    .form-linha {
+        flex-direction: column;
+    }
+
+    .form-container {
+        padding: 24px 16px;
+    }
+}
