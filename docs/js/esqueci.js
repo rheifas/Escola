@@ -26,6 +26,7 @@ function fecharModal() {
 
 btnCancelar.addEventListener('click', fecharModal);
 btnFechar.addEventListener('click', fecharModal);
+
 modalOverlay.addEventListener('click', function (e) {
     if (e.target === modalOverlay) fecharModal();
 });
