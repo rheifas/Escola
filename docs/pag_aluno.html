@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,20 +7,16 @@
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/pag_aluno.css">
 </head>
-
 <body class="pag_aluno">
 
     <header>
-        <a href="index.html">
-            <h1>Colégio CSEI</h1>
-        </a>
+        <a href="index.html"><h1>Colégio CSEI</h1></a>
         <nav>
-            <span class="header-pagina">Página do Aluno</span>
+            <span class="header-pagina" id="headerNome">Página do Aluno</span>
         </nav>
     </header>
 
     <div class="aluno-wrapper">
-
         <aside class="sidebar" id="sidebar">
             <button class="toggle-btn" id="toggleBtn" aria-label="Minimizar menu">&#8249;</button>
             <nav class="sidebar-nav">
@@ -42,31 +37,50 @@
 
         <main class="aluno-content">
 
+            <!-- INFORMAÇÕES -->
             <section class="pagina active" id="informacoes">
                 <h2>Informações</h2>
-                <p>Dados do aluno aqui...</p>
+                <div id="dadosAluno" class="info-card"></div>
             </section>
 
+            <!-- DISCIPLINAS -->
             <section class="pagina" id="disciplinas">
-                <h2>Disciplinas</h2>
-                <p>Lista de disciplinas aqui...</p>
+                <h2>Minhas Disciplinas</h2>
+                <p class="subtitulo">Clique em uma disciplina para ver o boletim.</p>
+                <div id="listaDisciplinas" class="lista-cards"></div>
+                <div id="detalheBoletim" style="display:none; margin-top: 24px;"></div>
             </section>
-            
+
+            <!-- AGENDAMENTO -->
             <section class="pagina" id="agendamento">
-                <h2>Agendamento</h2>
-                <p>Agendamentos aqui...</p>
+                <h2>Agendamento de Atendimento</h2>
+                <div class="agendamento-wrapper">
+                    <div class="form-agendamento">
+                        <h3>Novo Agendamento</h3>
+                        <div class="form-grupo">
+                            <label>Assunto *</label>
+                            <input type="text" id="agendamentoAssunto" placeholder="Descreva o assunto...">
+                        </div>
+                        <div class="form-grupo">
+                            <label>Data *</label>
+                            <input type="date" id="agendamentoData">
+                        </div>
+                        <button class="btn-salvar" onclick="salvarAgendamento()">Enviar Solicitação</button>
+                    </div>
+                    <div class="agendamentos-lista">
+                        <h3>Meus Agendamentos</h3>
+                        <div id="listaAgendamentos" class="lista-cards"></div>
+                    </div>
+                </div>
             </section>
 
         </main>
-
     </div>
 
     <footer>
-        <p>&copy; 2025 Colégio CSEI — Salvador, BA</p>
+        <p>&copy; 2026 Colégio CSEI — Salvador, BA</p>
     </footer>
 
     <script src="js/pag_aluno.js"></script>
-
 </body>
-
 </html>

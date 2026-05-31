@@ -321,3 +321,60 @@
 }
 
 .btn-salvar:hover { background-color: #a01515; }
+
+/* PAINEL LATERAL DO ALUNO */
+.painel-aluno {
+    display: none;
+    flex-direction: column;
+    position: fixed;
+    top: 70px;
+    right: 0;
+    width: 420px;
+    height: calc(100vh - 70px - 54px);
+    background-color: #ffffff;
+    border-left: 2px solid rgb(126, 19, 19);
+    box-shadow: -4px 0 16px rgba(0,0,0,0.1);
+    z-index: 200;
+    overflow-y: auto;
+    padding: 24px;
+    gap: 20px;
+}
+
+.painel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.painel-header h3 { font-size: 18px; color: #2c2c2c; }
+
+.painel-section h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* BOLETIM NOS CARDS */
+.card-boletim {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+}
+
+.boletim-item { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.boletim-label { font-size: 11px; color: #999; font-weight: 600; text-transform: uppercase; }
+.boletim-valor { font-size: 18px; font-weight: 700; color: #2c2c2c; }
+
+.badge { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+.badge.aprovado { background-color: #c6f6d5; color: #276749; }
+.badge.reprovado { background-color: #fed7d7; color: #9b2c2c; }
+.badge.recuperacao { background-color: #fefcbf; color: #744210; }
+
+.card-clicavel { cursor: pointer; }
+.card-clicavel:hover { background-color: #fdf0f0; box-shadow: 0 2px 8px rgba(126,19,19,0.1); }

@@ -15,35 +15,33 @@
         <a href="index.html">
             <h1>Colégio CSEI</h1>
         </a>
-        <nav>
-            <span class="header-pagina">Página do Coordenador</span>
-        </nav>
+        <nav><span class="header-pagina" id="headerNome">Página do Coordenador</span></nav>
     </header>
 
     <div class="aluno-wrapper">
-
         <aside class="sidebar" id="sidebar">
             <button class="toggle-btn" id="toggleBtn" aria-label="Minimizar menu">&#8249;</button>
             <nav class="sidebar-nav">
                 <a href="#" class="nav-item active" data-target="alunos">
-                    <span class="nav-icon">🎓</span>
-                    <span class="nav-label">Alunos</span>
+                    <span class="nav-icon">🎓</span><span class="nav-label">Alunos</span>
                 </a>
                 <a href="#" class="nav-item" data-target="professores">
-                    <span class="nav-icon">👨‍🏫</span>
-                    <span class="nav-label">Professores</span>
+                    <span class="nav-icon">👨‍🏫</span><span class="nav-label">Professores</span>
                 </a>
                 <a href="#" class="nav-item" data-target="turmas">
-                    <span class="nav-icon">🏫</span>
-                    <span class="nav-label">Turmas</span>
+                    <span class="nav-icon">🏫</span><span class="nav-label">Turmas</span>
                 </a>
                 <a href="#" class="nav-item" data-target="disciplinas">
-                    <span class="nav-icon">📚</span>
-                    <span class="nav-label">Disciplinas</span>
+                    <span class="nav-icon">📚</span><span class="nav-label">Disciplinas</span>
                 </a>
                 <a href="#" class="nav-item" data-target="alocacoes">
-                    <span class="nav-icon">🔗</span>
-                    <span class="nav-label">Alocações</span>
+                    <span class="nav-icon">🔗</span><span class="nav-label">Alocações</span>
+                </a>
+                <a href="#" class="nav-item" data-target="boletins">
+                    <span class="nav-icon">📊</span><span class="nav-label">Boletins</span>
+                </a>
+                <a href="#" class="nav-item" data-target="atendimentos">
+                    <span class="nav-icon">📅</span><span class="nav-label">Atendimentos</span>
                 </a>
             </nav>
         </aside>
@@ -115,7 +113,57 @@
                 <div id="listaAlocacoes" class="lista-cards"></div>
             </section>
 
+            <!-- BOLETINS -->
+            <section class="pagina" id="boletins">
+                <div class="secao-header">
+                    <h2>Boletins</h2>
+                    <button class="btn-novo" onclick="abrirModal('modalBoletim')">+ Novo Boletim</button>
+                </div>
+                <div class="busca-bar">
+                    <input type="text" id="buscaBoletimAluno" placeholder="Buscar por nome do aluno...">
+                    <button onclick="buscarBoletins()">Buscar</button>
+                    <button onclick="carregarBoletins()">Ver todos</button>
+                </div>
+                <div id="listaBoletins" class="lista-cards"></div>
+            </section>
+
+            <!-- ATENDIMENTOS -->
+            <section class="pagina" id="atendimentos">
+                <div class="secao-header">
+                    <h2>Atendimentos</h2>
+                </div>
+                <div class="busca-bar">
+                    <input type="text" id="buscaAtendimentoAluno" placeholder="Buscar por nome do aluno...">
+                    <button onclick="buscarAtendimentos()">Buscar</button>
+                    <button onclick="carregarAtendimentos()">Ver todos</button>
+                </div>
+                <div id="listaAtendimentos" class="lista-cards"></div>
+            </section>
+
         </main>
+    </div>
+
+    <!-- PAINEL LATERAL DO ALUNO -->
+    <div class="painel-aluno" id="painelAluno">
+        <div class="painel-header">
+            <h3 id="painelAlunoNome"></h3>
+            <button class="btn-fechar" onclick="fecharPainelAluno()">✕</button>
+        </div>
+    
+        <div class="painel-section">
+            <h4>Dados Pessoais</h4>
+            <div id="painelAlunoInfo" class="info-card"></div>
+        </div>
+        <div class="painel-section">
+            <h4>Boletim</h4>
+            <div id="painelAlunoBoletins" class="lista-cards"></div>
+        </div>
+        <div class="painel-header">
+            <h3 id="painelAlunoNome"></h3>
+            <div style="display:flex;gap:8px;align-items:center;">
+                <button class="btn-novo" id="btnNovoBoletimAluno">+ Boletim</button>
+            </div>
+        </div>
     </div>
 
     <footer>
@@ -127,26 +175,15 @@
         <div class="modal">
             <h3 id="modalAlunoTitulo">Novo Aluno</h3>
             <input type="hidden" id="alunoId">
-            <div class="form-grupo">
-                <label>Nome *</label>
-                <input type="text" id="alunoNome" placeholder="Nome completo">
+            <div class="form-grupo"><label>Nome *</label><input type="text" id="alunoNome" placeholder="Nome completo">
             </div>
-            <div class="form-grupo">
-                <label>CPF</label>
-                <input type="text" id="alunoCpf" placeholder="000.000.000-00" maxlength="14">
-            </div>
-            <div class="form-grupo">
-                <label>Data de Nascimento</label>
-                <input type="date" id="alunoNasc">
-            </div>
-            <div class="form-grupo">
-                <label>Telefone</label>
-                <input type="text" id="alunoTel" placeholder="(00) 00000-0000" maxlength="15">
-            </div>
-            <div class="form-grupo">
-                <label>Endereço</label>
-                <input type="text" id="alunoEndereco" placeholder="Endereço completo">
-            </div>
+            <div class="form-grupo"><label>CPF</label><input type="text" id="alunoCpf" placeholder="000.000.000-00"
+                    maxlength="14"></div>
+            <div class="form-grupo"><label>Data de Nascimento</label><input type="date" id="alunoNasc"></div>
+            <div class="form-grupo"><label>Telefone</label><input type="text" id="alunoTel"
+                    placeholder="(00) 00000-0000" maxlength="15"></div>
+            <div class="form-grupo"><label>Endereço</label><input type="text" id="alunoEndereco"
+                    placeholder="Endereço completo"></div>
             <div class="modal-acoes">
                 <button class="btn-cancelar" onclick="fecharModal('modalAluno')">Cancelar</button>
                 <button class="btn-salvar" onclick="salvarAluno()">Salvar</button>
@@ -159,30 +196,17 @@
         <div class="modal">
             <h3 id="modalProfessorTitulo">Novo Professor</h3>
             <input type="hidden" id="professorId">
-            <div class="form-grupo">
-                <label>Nome *</label>
-                <input type="text" id="professorNome" placeholder="Nome completo">
-            </div>
-            <div class="form-grupo">
-                <label>CPF *</label>
-                <input type="text" id="professorCpf" placeholder="000.000.000-00" maxlength="14">
-            </div>
-            <div class="form-grupo">
-                <label>Data de Nascimento</label>
-                <input type="date" id="professorNasc">
-            </div>
-            <div class="form-grupo">
-                <label>Telefone</label>
-                <input type="text" id="professorTel" placeholder="(00) 00000-0000" maxlength="15">
-            </div>
-            <div class="form-grupo">
-                <label>Endereço</label>
-                <input type="text" id="professorEndereco" placeholder="Endereço completo">
-            </div>
-            <div class="form-grupo">
-                <label>Formação</label>
-                <input type="text" id="professorFormacao" placeholder="Ex: Licenciatura em Matemática">
-            </div>
+            <div class="form-grupo"><label>Nome *</label><input type="text" id="professorNome"
+                    placeholder="Nome completo"></div>
+            <div class="form-grupo"><label>CPF *</label><input type="text" id="professorCpf"
+                    placeholder="000.000.000-00" maxlength="14"></div>
+            <div class="form-grupo"><label>Data de Nascimento</label><input type="date" id="professorNasc"></div>
+            <div class="form-grupo"><label>Telefone</label><input type="text" id="professorTel"
+                    placeholder="(00) 00000-0000" maxlength="15"></div>
+            <div class="form-grupo"><label>Endereço</label><input type="text" id="professorEndereco"
+                    placeholder="Endereço completo"></div>
+            <div class="form-grupo"><label>Formação</label><input type="text" id="professorFormacao"
+                    placeholder="Ex: Licenciatura em Matemática"></div>
             <div class="modal-acoes">
                 <button class="btn-cancelar" onclick="fecharModal('modalProfessor')">Cancelar</button>
                 <button class="btn-salvar" onclick="salvarProfessor()">Salvar</button>
@@ -195,21 +219,17 @@
         <div class="modal">
             <h3 id="modalTurmaTitulo">Nova Turma</h3>
             <input type="hidden" id="turmaId">
-            <div class="form-grupo">
-                <label>Nome *</label>
-                <input type="text" id="turmaNome" placeholder="Ex: 9º Ano A">
+            <div class="form-grupo"><label>Nome *</label><input type="text" id="turmaNome" placeholder="Ex: 9º Ano A">
             </div>
-            <div class="form-grupo">
-                <label>Ano Letivo *</label>
-                <input type="number" id="turmaAno" placeholder="Ex: 2026">
-            </div>
+            <div class="form-grupo"><label>Ano Letivo *</label><input type="number" id="turmaAno"
+                    placeholder="Ex: 2026"></div>
             <div class="form-grupo">
                 <label>Turno *</label>
                 <select id="turmaTurno">
                     <option value="">Selecione</option>
-                    <option value="MATUTINO">MATUTINO</option>
-                    <option value="VESPERTINO">VESPERTINO</option>
-                    <option value="NOTURNO">NOTURNO</option>
+                    <option value="MATUTINO">Manhã</option>
+                    <option value="VESPERTINO">Tarde</option>
+                    <option value="NOTURNO">Noite</option>
                 </select>
             </div>
             <div class="modal-acoes">
@@ -224,10 +244,8 @@
         <div class="modal">
             <h3 id="modalDisciplinaTitulo">Nova Disciplina</h3>
             <input type="hidden" id="disciplinaId">
-            <div class="form-grupo">
-                <label>Nome *</label>
-                <input type="text" id="disciplinaNome" placeholder="Ex: Matemática">
-            </div>
+            <div class="form-grupo"><label>Nome *</label><input type="text" id="disciplinaNome"
+                    placeholder="Ex: Matemática"></div>
             <div class="modal-acoes">
                 <button class="btn-cancelar" onclick="fecharModal('modalDisciplina')">Cancelar</button>
                 <button class="btn-salvar" onclick="salvarDisciplina()">Salvar</button>
@@ -240,21 +258,31 @@
         <div class="modal">
             <h3 id="modalAlocacaoTitulo">Nova Alocação</h3>
             <input type="hidden" id="alocacaoId">
-            <div class="form-grupo">
-                <label>Professor *</label>
-                <select id="alocacaoProfessor"></select>
-            </div>
-            <div class="form-grupo">
-                <label>Turma *</label>
-                <select id="alocacaoTurma"></select>
-            </div>
-            <div class="form-grupo">
-                <label>Disciplina *</label>
-                <select id="alocacaoDisciplina"></select>
-            </div>
+            <div class="form-grupo"><label>Professor *</label><select id="alocacaoProfessor"></select></div>
+            <div class="form-grupo"><label>Turma *</label><select id="alocacaoTurma"></select></div>
+            <div class="form-grupo"><label>Disciplina *</label><select id="alocacaoDisciplina"></select></div>
             <div class="modal-acoes">
                 <button class="btn-cancelar" onclick="fecharModal('modalAlocacao')">Cancelar</button>
                 <button class="btn-salvar" onclick="salvarAlocacao()">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL BOLETIM -->
+    <div class="modal-overlay" id="modalBoletim">
+        <div class="modal">
+            <h3 id="modalBoletimTitulo">Novo Boletim</h3>
+            <input type="hidden" id="boletimId">
+            <div class="form-grupo"><label>Aluno *</label><select id="boletimAluno"></select></div>
+            <div class="form-grupo"><label>Alocação (Disciplina/Turma) *</label><select id="boletimAlocacao"></select>
+            </div>
+            <div class="form-grupo"><label>Nota</label><input type="number" id="boletimNota" placeholder="0.0" min="0"
+                    max="10" step="0.1"></div>
+            <div class="form-grupo"><label>Frequência (%)</label><input type="number" id="boletimFrequencia"
+                    placeholder="0.0" min="0" max="100" step="0.1"></div>
+            <div class="modal-acoes">
+                <button class="btn-cancelar" onclick="fecharModal('modalBoletim')">Cancelar</button>
+                <button class="btn-salvar" onclick="salvarBoletim()">Salvar</button>
             </div>
         </div>
     </div>

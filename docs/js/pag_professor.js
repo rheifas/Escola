@@ -1,6 +1,9 @@
 const API = 'http://localhost:8080';
 let professorAtual = null;
 
+const perfil = localStorage.getItem('perfil');
+if (!token || perfil !== 'PROFESSOR') window.location.href = 'login.html';
+
 // ==================== SIDEBAR ====================
 const btnToggle = document.getElementById('toggleBtn');
 const sidebar = document.getElementById('sidebar');
