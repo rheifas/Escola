@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página do Aluno</title>
+    <title>Página do Coordenador</title>
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/pag_coordenador.css">
 </head>
@@ -12,7 +12,9 @@
 <body class="pag_coordenador">
 
     <header>
-        <a href="index.html"><h1>Colégio CSEI</h1></a>
+        <a href="index.html">
+            <h1>Colégio CSEI</h1>
+        </a>
         <nav>
             <span class="header-pagina">Página do Coordenador</span>
         </nav>
@@ -23,68 +25,241 @@
         <aside class="sidebar" id="sidebar">
             <button class="toggle-btn" id="toggleBtn" aria-label="Minimizar menu">&#8249;</button>
             <nav class="sidebar-nav">
-                <a href="#" class="nav-item active" data-target="informacoes">
-                    <span class="nav-icon">📋</span>
-                    <span class="nav-label">Informações</span>
+                <a href="#" class="nav-item active" data-target="alunos">
+                    <span class="nav-icon">🎓</span>
+                    <span class="nav-label">Alunos</span>
+                </a>
+                <a href="#" class="nav-item" data-target="professores">
+                    <span class="nav-icon">👨‍🏫</span>
+                    <span class="nav-label">Professores</span>
+                </a>
+                <a href="#" class="nav-item" data-target="turmas">
+                    <span class="nav-icon">🏫</span>
+                    <span class="nav-label">Turmas</span>
                 </a>
                 <a href="#" class="nav-item" data-target="disciplinas">
                     <span class="nav-icon">📚</span>
                     <span class="nav-label">Disciplinas</span>
                 </a>
-                <a href="#" class="nav-item" data-target="grade">
-                    <span class="nav-icon">🕐</span>
-                    <span class="nav-label">Grade Horária</span>
-                </a>                
-                </a>
-                <a href="#" class="nav-item" data-target="calendario">
-                    <span class="nav-icon">📆</span>
-                    <span class="nav-label">Calendário Letivo</span>
+                <a href="#" class="nav-item" data-target="alocacoes">
+                    <span class="nav-icon">🔗</span>
+                    <span class="nav-label">Alocações</span>
                 </a>
             </nav>
         </aside>
 
         <main class="aluno-content">
 
-            <section class="pagina active" id="informacoes">
-                <h2>Informações</h2>
-                <p>Dados do aluno aqui...</p>
+            <!-- ALUNOS -->
+            <section class="pagina active" id="alunos">
+                <div class="secao-header">
+                    <h2>Alunos</h2>
+                    <button class="btn-novo" onclick="abrirModal('modalAluno')">+ Novo Aluno</button>
+                </div>
+                <div class="busca-bar">
+                    <input type="text" id="buscaAluno" placeholder="Buscar por nome...">
+                    <button onclick="buscarAlunos()">Buscar</button>
+                    <button onclick="carregarAlunos()">Ver todos</button>
+                </div>
+                <div id="listaAlunos" class="lista-cards"></div>
             </section>
-        
-            <section class="pagina" id="disciplinas">
-                <h2>Disciplinas</h2>
-                <p>Lista de disciplinas aqui...</p>
-            </section>
-        
-            <section class="pagina" id="grade">
-                <h2>Grade Horária</h2>
-                <p>Grade horária aqui...</p>
-            </section>
-        
-            <section class="pagina" id="agendamento">
-                <h2>Agendamento</h2>
-                <p>Agendamentos aqui...</p>
-            </section>
-        
-            <section class="pagina" id="rematricula">
-                <h2>Rematrícula</h2>
-                <p>Rematrícula aqui...</p>
-            </section>
-        
-            <section class="pagina" id="calendario">
-                <h2>Calendário Letivo</h2>
-                <p>Calendário aqui...</p>
-            </section>
-        
-        </main>
 
+            <!-- PROFESSORES -->
+            <section class="pagina" id="professores">
+                <div class="secao-header">
+                    <h2>Professores</h2>
+                    <button class="btn-novo" onclick="abrirModal('modalProfessor')">+ Novo Professor</button>
+                </div>
+                <div class="busca-bar">
+                    <input type="text" id="buscaProfessor" placeholder="Buscar por nome...">
+                    <button onclick="buscarProfessores()">Buscar</button>
+                    <button onclick="carregarProfessores()">Ver todos</button>
+                </div>
+                <div id="listaProfessores" class="lista-cards"></div>
+            </section>
+
+            <!-- TURMAS -->
+            <section class="pagina" id="turmas">
+                <div class="secao-header">
+                    <h2>Turmas</h2>
+                    <button class="btn-novo" onclick="abrirModal('modalTurma')">+ Nova Turma</button>
+                </div>
+                <div class="busca-bar">
+                    <input type="text" id="buscaTurma" placeholder="Buscar por nome...">
+                    <button onclick="buscarTurmas()">Buscar</button>
+                    <button onclick="carregarTurmas()">Ver todos</button>
+                </div>
+                <div id="listaTurmas" class="lista-cards"></div>
+            </section>
+
+            <!-- DISCIPLINAS -->
+            <section class="pagina" id="disciplinas">
+                <div class="secao-header">
+                    <h2>Disciplinas</h2>
+                    <button class="btn-novo" onclick="abrirModal('modalDisciplina')">+ Nova Disciplina</button>
+                </div>
+                <div class="busca-bar">
+                    <input type="text" id="buscaDisciplina" placeholder="Buscar por nome...">
+                    <button onclick="buscarDisciplinas()">Buscar</button>
+                    <button onclick="carregarDisciplinas()">Ver todos</button>
+                </div>
+                <div id="listaDisciplinas" class="lista-cards"></div>
+            </section>
+
+            <!-- ALOCAÇÕES -->
+            <section class="pagina" id="alocacoes">
+                <div class="secao-header">
+                    <h2>Alocações</h2>
+                    <button class="btn-novo" onclick="abrirModal('modalAlocacao')">+ Nova Alocação</button>
+                </div>
+                <div id="listaAlocacoes" class="lista-cards"></div>
+            </section>
+
+        </main>
     </div>
 
     <footer>
         <p>&copy; 2025 Colégio CSEI — Salvador, BA</p>
     </footer>
 
-    <script src="js/pag_aluno.js"></script>
+    <!-- MODAL ALUNO -->
+    <div class="modal-overlay" id="modalAluno">
+        <div class="modal">
+            <h3 id="modalAlunoTitulo">Novo Aluno</h3>
+            <input type="hidden" id="alunoId">
+            <div class="form-grupo">
+                <label>Nome *</label>
+                <input type="text" id="alunoNome" placeholder="Nome completo">
+            </div>
+            <div class="form-grupo">
+                <label>CPF</label>
+                <input type="text" id="alunoCpf" placeholder="000.000.000-00" maxlength="14">
+            </div>
+            <div class="form-grupo">
+                <label>Data de Nascimento</label>
+                <input type="date" id="alunoNasc">
+            </div>
+            <div class="form-grupo">
+                <label>Telefone</label>
+                <input type="text" id="alunoTel" placeholder="(00) 00000-0000" maxlength="15">
+            </div>
+            <div class="form-grupo">
+                <label>Endereço</label>
+                <input type="text" id="alunoEndereco" placeholder="Endereço completo">
+            </div>
+            <div class="modal-acoes">
+                <button class="btn-cancelar" onclick="fecharModal('modalAluno')">Cancelar</button>
+                <button class="btn-salvar" onclick="salvarAluno()">Salvar</button>
+            </div>
+        </div>
+    </div>
 
+    <!-- MODAL PROFESSOR -->
+    <div class="modal-overlay" id="modalProfessor">
+        <div class="modal">
+            <h3 id="modalProfessorTitulo">Novo Professor</h3>
+            <input type="hidden" id="professorId">
+            <div class="form-grupo">
+                <label>Nome *</label>
+                <input type="text" id="professorNome" placeholder="Nome completo">
+            </div>
+            <div class="form-grupo">
+                <label>CPF *</label>
+                <input type="text" id="professorCpf" placeholder="000.000.000-00" maxlength="14">
+            </div>
+            <div class="form-grupo">
+                <label>Data de Nascimento</label>
+                <input type="date" id="professorNasc">
+            </div>
+            <div class="form-grupo">
+                <label>Telefone</label>
+                <input type="text" id="professorTel" placeholder="(00) 00000-0000" maxlength="15">
+            </div>
+            <div class="form-grupo">
+                <label>Endereço</label>
+                <input type="text" id="professorEndereco" placeholder="Endereço completo">
+            </div>
+            <div class="form-grupo">
+                <label>Formação</label>
+                <input type="text" id="professorFormacao" placeholder="Ex: Licenciatura em Matemática">
+            </div>
+            <div class="modal-acoes">
+                <button class="btn-cancelar" onclick="fecharModal('modalProfessor')">Cancelar</button>
+                <button class="btn-salvar" onclick="salvarProfessor()">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL TURMA -->
+    <div class="modal-overlay" id="modalTurma">
+        <div class="modal">
+            <h3 id="modalTurmaTitulo">Nova Turma</h3>
+            <input type="hidden" id="turmaId">
+            <div class="form-grupo">
+                <label>Nome *</label>
+                <input type="text" id="turmaNome" placeholder="Ex: 9º Ano A">
+            </div>
+            <div class="form-grupo">
+                <label>Ano Letivo *</label>
+                <input type="number" id="turmaAno" placeholder="Ex: 2026">
+            </div>
+            <div class="form-grupo">
+                <label>Turno *</label>
+                <select id="turmaTurno">
+                    <option value="">Selecione</option>
+                    <option value="MATUTINO">MATUTINO</option>
+                    <option value="VESPERTINO">VESPERTINO</option>
+                    <option value="NOTURNO">NOTURNO</option>
+                </select>
+            </div>
+            <div class="modal-acoes">
+                <button class="btn-cancelar" onclick="fecharModal('modalTurma')">Cancelar</button>
+                <button class="btn-salvar" onclick="salvarTurma()">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DISCIPLINA -->
+    <div class="modal-overlay" id="modalDisciplina">
+        <div class="modal">
+            <h3 id="modalDisciplinaTitulo">Nova Disciplina</h3>
+            <input type="hidden" id="disciplinaId">
+            <div class="form-grupo">
+                <label>Nome *</label>
+                <input type="text" id="disciplinaNome" placeholder="Ex: Matemática">
+            </div>
+            <div class="modal-acoes">
+                <button class="btn-cancelar" onclick="fecharModal('modalDisciplina')">Cancelar</button>
+                <button class="btn-salvar" onclick="salvarDisciplina()">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL ALOCAÇÃO -->
+    <div class="modal-overlay" id="modalAlocacao">
+        <div class="modal">
+            <h3 id="modalAlocacaoTitulo">Nova Alocação</h3>
+            <input type="hidden" id="alocacaoId">
+            <div class="form-grupo">
+                <label>Professor *</label>
+                <select id="alocacaoProfessor"></select>
+            </div>
+            <div class="form-grupo">
+                <label>Turma *</label>
+                <select id="alocacaoTurma"></select>
+            </div>
+            <div class="form-grupo">
+                <label>Disciplina *</label>
+                <select id="alocacaoDisciplina"></select>
+            </div>
+            <div class="modal-acoes">
+                <button class="btn-cancelar" onclick="fecharModal('modalAlocacao')">Cancelar</button>
+                <button class="btn-salvar" onclick="salvarAlocacao()">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/pag_coordenador.js"></script>
 </body>
 
 </html>

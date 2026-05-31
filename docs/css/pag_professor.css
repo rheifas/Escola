@@ -1,4 +1,4 @@
-.pag_aluno {
+.pag_professor {
     background-color: #f4f4f4;
     padding-bottom: 54px;
 }
@@ -9,8 +9,7 @@
     position: relative;
 }
 
-/*menir lateral*/
-
+/* SIDEBAR */
 .sidebar {
     width: 200px;
     min-width: 200px;
@@ -75,9 +74,7 @@
     transition: background-color 0.15s;
 }
 
-.nav-item:hover {
-    background-color: #c4c4c4;
-}
+.nav-item:hover { background-color: #c4c4c4; }
 
 .nav-item.active {
     background-color: rgb(126, 19, 19);
@@ -101,6 +98,7 @@
     pointer-events: none;
 }
 
+/* CONTEÚDO */
 .aluno-content {
     flex: 1;
     padding: 32px;
@@ -110,10 +108,160 @@
     font-size: 15px;
 }
 
-.pagina {
-    display: none;
+.pagina { display: none; }
+.pagina.active { display: block; }
+
+/* BUSCA */
+.busca-professor {
+    max-width: 500px;
 }
 
-.pagina.active {
-    display: block;
+.busca-professor h2 {
+    font-size: 22px;
+    color: #2c2c2c;
+    margin-bottom: 8px;
+}
+
+.busca-professor p {
+    color: #666;
+    margin-bottom: 16px;
+}
+
+.busca-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.busca-bar input {
+    flex: 1;
+    padding: 9px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+}
+
+.busca-bar input:focus { border-color: rgb(126, 19, 19); }
+
+.busca-bar button {
+    padding: 9px 16px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    background-color: rgb(126, 19, 19);
+    color: #ffffff;
+    transition: background-color 0.2s;
+}
+
+.busca-bar button:hover { background-color: #a01515; }
+
+.resultado-label {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.resultado-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px 16px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.resultado-item:hover {
+    background-color: #fdf0f0;
+    box-shadow: 0 2px 8px rgba(126,19,19,0.1);
+}
+
+.resultado-item strong {
+    font-size: 15px;
+    color: #2c2c2c;
+}
+
+.resultado-item span {
+    font-size: 13px;
+    color: #666;
+}
+
+/* INFORMAÇÕES */
+.info-card {
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 24px;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.info-linha {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.info-label {
+    font-weight: 600;
+    color: #2c2c2c;
+    min-width: 100px;
+    font-size: 14px;
+}
+
+/* CARDS */
+.lista-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 14px 18px;
+    transition: box-shadow 0.2s;
+}
+
+.card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+
+.card-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.card-info strong {
+    font-size: 15px;
+    color: #2c2c2c;
+}
+
+.card-info span {
+    font-size: 13px;
+    color: #666;
+}
+
+.vazio {
+    color: #999;
+    font-style: italic;
+    padding: 24px 0;
+}
+
+/* Título das seções */
+.pagina h2 {
+    font-size: 22px;
+    color: #2c2c2c;
+    margin-bottom: 20px;
 }

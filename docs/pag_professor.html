@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página do Aluno</title>
+    <title>Página do Professor</title>
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/pag_professor.css">
 </head>
@@ -31,60 +31,51 @@
                     <span class="nav-icon">📚</span>
                     <span class="nav-label">Disciplinas</span>
                 </a>
-                <a href="#" class="nav-item" data-target="grade">
-                    <span class="nav-icon">🕐</span>
-                    <span class="nav-label">Grade Horária</span>
-                </a>                
-                </a>
-                <a href="#" class="nav-item" data-target="calendario">
-                    <span class="nav-icon">📆</span>
-                    <span class="nav-label">Calendário Letivo</span>
+                <a href="#" class="nav-item" data-target="turmas">
+                    <span class="nav-icon">🏫</span>
+                    <span class="nav-label">Turmas</span>
                 </a>
             </nav>
         </aside>
 
         <main class="aluno-content">
 
-            <section class="pagina active" id="informacoes">
-                <h2>Informações</h2>
-                <p>Dados do aluno aqui...</p>
-            </section>
-        
-            <section class="pagina" id="disciplinas">
-                <h2>Disciplinas</h2>
-                <p>Lista de disciplinas aqui...</p>
-            </section>
-        
-            <section class="pagina" id="grade">
-                <h2>Grade Horária</h2>
-                <p>Grade horária aqui...</p>
-            </section>
-        
-            <section class="pagina" id="agendamento">
-                <h2>Agendamento</h2>
-                <p>Agendamentos aqui...</p>
-            </section>
-        
-            <section class="pagina" id="rematricula">
-                <h2>Rematrícula</h2>
-                <p>Rematrícula aqui...</p>
-            </section>
-        
-            <section class="pagina" id="calendario">
-                <h2>Calendário Letivo</h2>
-                <p>Calendário aqui...</p>
-            </section>
-        
-        </main>
+            <!-- BUSCA -->
+            <div class="busca-professor" id="buscaProfessorBox">
+                <h2>Identificação</h2>
+                <p>Digite seu nome para carregar suas informações.</p>
+                <div class="busca-bar">
+                    <input type="text" id="inputBuscaProfessor" placeholder="Seu nome...">
+                    <button onclick="buscarProfessor()">Buscar</button>
+                </div>
+                <div id="resultadoBusca"></div>
+            </div>
 
+            <!-- INFORMAÇÕES -->
+            <section class="pagina" id="informacoes">
+                <h2>Informações</h2>
+                <div id="dadosProfessor" class="info-card"></div>
+            </section>
+
+            <!-- DISCIPLINAS -->
+            <section class="pagina" id="disciplinas">
+                <h2>Minhas Disciplinas</h2>
+                <div id="listaDisciplinasProfessor" class="lista-cards"></div>
+            </section>
+
+            <!-- TURMAS -->
+            <section class="pagina" id="turmas">
+                <h2>Minhas Turmas</h2>
+                <div id="listaTurmasProfessor" class="lista-cards"></div>
+            </section>
+
+        </main>
     </div>
 
     <footer>
         <p>&copy; 2025 Colégio CSEI — Salvador, BA</p>
     </footer>
 
-    <script src="js/pag_aluno.js"></script>
-
+    <script src="js/pag_professor.js"></script>
 </body>
-
 </html>

@@ -42,13 +42,9 @@
                             <input type="date" id="nascimento" name="nascimento" required>
                         </div>
                         <div class="form-grupo">
-                            <label for="sexo">Sexo *</label>
-                            <select id="sexo" name="sexo" required>
-                                <option value="">Selecione</option>
-                                <option value="M">Masculino</option>
-                                <option value="F">Feminino</option>
-                                <option value="O">Outro</option>
-                            </select>
+                            <label for="telefone">Telefone / WhatsApp *</label>
+                            <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" maxlength="15"
+                                required>
                         </div>
                     </div>
 
@@ -60,44 +56,6 @@
                         </div>
 
                     </div>
-
-                    <div class="form-linha">
-                        <div class="form-grupo">
-                            <label for="serie">Série / Ano pretendido *</label>
-                            <select id="serie" name="serie" required>
-                                <option value="">Selecione</option>
-                                <optgroup label="Ensino Fundamental I">
-                                    <option value="1ano">1º Ano</option>
-                                    <option value="2ano">2º Ano</option>
-                                    <option value="3ano">3º Ano</option>
-                                    <option value="4ano">4º Ano</option>
-                                    <option value="5ano">5º Ano</option>
-                                </optgroup>
-                                <optgroup label="Ensino Fundamental II">
-                                    <option value="6ano">6º Ano</option>
-                                    <option value="7ano">7º Ano</option>
-                                    <option value="8ano">8º Ano</option>
-                                    <option value="9ano">9º Ano</option>
-                                </optgroup>
-                                <optgroup label="Ensino Médio">
-                                    <option value="1em">1ª Série</option>
-                                    <option value="2em">2ª Série</option>
-                                    <option value="3em">3ª Série</option>
-                                </optgroup>
-                            </select>
-                        </div>
-                        <div class="form-grupo">
-                            <label for="turno">Turno *</label>
-                            <select id="turno" name="turno" required>
-                                <option value="">Selecione</option>
-                                <option value="M">Matutino</option>
-                                <option value="V">Vespertino</option>
-                                <option value="N">Noturno</option>
-                            </select>
-                        </div>
-                    </div>
-
-
 
                 </fieldset>
 
@@ -150,17 +108,6 @@
 
                     <div class="form-linha">
                         <div class="form-grupo">
-                            <label for="parentesco">Parentesco *</label>
-                            <select id="parentesco" name="parentesco" required>
-                                <option value="">Selecione</option>
-                                <option value="pai">Pai</option>
-                                <option value="mae">Mãe</option>
-                                <option value="avo">Avó / Avô</option>
-                                <option value="tio">Tio / Tia</option>
-                                <option value="outro">Outro</option>
-                            </select>
-                        </div>
-                        <div class="form-grupo">
                             <label for="cpfResp">CPF do responsável *</label>
                             <input type="text" id="cpfResp" name="cpfResp" placeholder="000.000.000-00" maxlength="14"
                                 required>
@@ -170,20 +117,15 @@
                     <div class="form-linha">
                         <div class="form-grupo">
                             <label for="telefone">Telefone / WhatsApp *</label>
-                            <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" maxlength="15"
+                            <input type="tel" id="telresp" name="telresp" placeholder="(00) 00000-0000" maxlength="15"
                                 required>
                         </div>
                         <div class="form-grupo">
-                            <label for="email">E-mail *</label>
-                            <input type="email" id="email" name="email" placeholder="email@exemplo.com" required>
+                            <label for="nascimento">Data de nascimento *</label>
+                            <input type="date" id="nascresp" name="nascresp" required>
                         </div>
                     </div>
-
-                    <div class="form-grupo">
-                        <label for="profissao">Profissão</label>
-                        <input type="text" id="profissao" name="profissao" placeholder="Profissão do responsável">
-                    </div>
-
+                    
                 </fieldset>
 
                 <div class="form-aceite">
@@ -202,6 +144,7 @@
         <p>&copy; 2025 Colégio CSEI — Salvador, BA</p>
     </footer>
 
+    <script src="js/matricula.js"></script>
 </body>
 
 </html>
