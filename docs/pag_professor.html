@@ -12,14 +12,15 @@
 <body class="pag_professor">
 
     <header>
-        <a href="index.html"><h1>Colégio CSEI</h1></a>
+        <a href="index.html">
+            <h1>Colégio CSEI</h1>
+        </a>
         <nav>
-            <span class="header-pagina">Página do Professor</span>
+            <span class="header-pagina" id="headerNome">Página do Professor</span>
         </nav>
     </header>
 
-    <div class="aluno-wrapper">
-
+    <div class="professor-wrapper">
         <aside class="sidebar" id="sidebar">
             <button class="toggle-btn" id="toggleBtn" aria-label="Minimizar menu">&#8249;</button>
             <nav class="sidebar-nav">
@@ -27,46 +28,27 @@
                     <span class="nav-icon">📋</span>
                     <span class="nav-label">Informações</span>
                 </a>
-                <a href="#" class="nav-item" data-target="disciplinas">
-                    <span class="nav-icon">📚</span>
-                    <span class="nav-label">Disciplinas</span>
-                </a>
                 <a href="#" class="nav-item" data-target="turmas">
-                    <span class="nav-icon">🏫</span>
-                    <span class="nav-label">Turmas</span>
+                    <span class="nav-icon">📚</span>
+                    <span class="nav-label">Minhas Turmas</span>
                 </a>
             </nav>
         </aside>
 
-        <main class="aluno-content">
-
-            <!-- BUSCA -->
-            <div class="busca-professor" id="buscaProfessorBox">
-                <h2>Identificação</h2>
-                <p>Digite seu nome para carregar suas informações.</p>
-                <div class="busca-bar">
-                    <input type="text" id="inputBuscaProfessor" placeholder="Seu nome...">
-                    <button onclick="buscarProfessor()">Buscar</button>
-                </div>
-                <div id="resultadoBusca"></div>
-            </div>
+        <main class="professor-content">
 
             <!-- INFORMAÇÕES -->
-            <section class="pagina" id="informacoes">
+            <section class="pagina active" id="informacoes">
                 <h2>Informações</h2>
                 <div id="dadosProfessor" class="info-card"></div>
-            </section>
-
-            <!-- DISCIPLINAS -->
-            <section class="pagina" id="disciplinas">
-                <h2>Minhas Disciplinas</h2>
-                <div id="listaDisciplinasProfessor" class="lista-cards"></div>
             </section>
 
             <!-- TURMAS -->
             <section class="pagina" id="turmas">
                 <h2>Minhas Turmas</h2>
-                <div id="listaTurmasProfessor" class="lista-cards"></div>
+                <p class="subtitulo">Clique em uma turma para ver e editar os boletins dos alunos.</p>
+                <div id="listaTurmas" class="lista-cards"></div>
+                <div id="painelBoletins" class="painel-boletins" style="display:none;"></div>
             </section>
 
         </main>
@@ -78,4 +60,5 @@
 
     <script src="js/pag_professor.js"></script>
 </body>
+
 </html>

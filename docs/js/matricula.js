@@ -82,12 +82,14 @@ document.getElementById('formMatricula').addEventListener('submit', async functi
             body: JSON.stringify(dadosAluno)
         });
 
+        const textoAluno = await resAluno.text();
         if (!resAluno.ok) {
-            const erro = await resAluno.json();
-            throw new Error(erro.message || 'Erro ao cadastrar aluno.');
+            let mensagem = 'Erro ao cadastrar aluno.';
+            try { mensagem = JSON.parse(textoAluno).message || mensagem; } catch (_) {}
+            throw new Error(mensagem);
         }
 
-        const alunoCriado = await resAluno.json();
+        const alunoCriado = JSON.parse(textoAluno);
 
         // 2. Cria o responsável vinculado ao aluno (com CPF)
         const dadosResponsavel = {
@@ -105,9 +107,11 @@ document.getElementById('formMatricula').addEventListener('submit', async functi
             body: JSON.stringify(dadosResponsavel)
         });
 
+        const textoResp = await resResp.text();
         if (!resResp.ok) {
-            const erro = await resResp.json();
-            throw new Error(erro.message || 'Erro ao cadastrar responsável.');
+            let mensagem = 'Erro ao cadastrar responsável.';
+            try { mensagem = JSON.parse(textoResp).message || mensagem; } catch (_) {}
+            throw new Error(mensagem);
         }
 
         mostrarMensagem('Matrícula enviada com sucesso! Em breve entraremos em contato.', 'sucesso');

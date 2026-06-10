@@ -55,7 +55,7 @@
                     <button class="btn-novo" onclick="abrirModal('modalAluno')">+ Novo Aluno</button>
                 </div>
                 <div class="busca-bar">
-                    <input type="text" id="buscaAluno" placeholder="Buscar por nome...">
+                    <input type="text" id="buscaAluno" placeholder="Buscar por nome..." oninput="debounce(buscarAlunos)">
                     <button onclick="buscarAlunos()">Buscar</button>
                     <button onclick="carregarAlunos()">Ver todos</button>
                 </div>
@@ -69,7 +69,7 @@
                     <button class="btn-novo" onclick="abrirModal('modalProfessor')">+ Novo Professor</button>
                 </div>
                 <div class="busca-bar">
-                    <input type="text" id="buscaProfessor" placeholder="Buscar por nome...">
+                    <input type="text" id="buscaProfessor" placeholder="Buscar por nome..." oninput="debounce(buscarProfessores)">
                     <button onclick="buscarProfessores()">Buscar</button>
                     <button onclick="carregarProfessores()">Ver todos</button>
                 </div>
@@ -83,11 +83,35 @@
                     <button class="btn-novo" onclick="abrirModal('modalTurma')">+ Nova Turma</button>
                 </div>
                 <div class="busca-bar">
-                    <input type="text" id="buscaTurma" placeholder="Buscar por nome...">
+                    <input type="text" id="buscaTurma" placeholder="Buscar por nome..." oninput="debounce(buscarTurmas)">
                     <button onclick="buscarTurmas()">Buscar</button>
                     <button onclick="carregarTurmas()">Ver todos</button>
                 </div>
                 <div id="listaTurmas" class="lista-cards"></div>
+
+                <!-- Painel da turma selecionada -->
+                <div id="painelTurma" style="display:none; margin-top:24px; border-top: 1px solid #e2e8f0; padding-top: 20px;">
+                    <div class="secao-header" style="margin-bottom:12px;">
+                        <h3 id="painelTurmaNome" style="font-size:1.1rem;"></h3>
+                        <button onclick="fecharPainelTurma()" style="background:none;border:none;cursor:pointer;font-size:1.2rem;" title="Fechar">✕</button>
+                    </div>
+
+                    <div style="margin-bottom:24px;">
+                        <div class="secao-header" style="margin-bottom:8px;">
+                            <h4 style="font-size:0.95rem;color:#555;">Alunos matriculados</h4>
+                            <button class="btn-novo" onclick="abrirModalMatricularNaTurma()" style="font-size:0.8rem;padding:5px 10px;">+ Matricular aluno</button>
+                        </div>
+                        <div id="painelTurmaAlunos" class="lista-cards"></div>
+                    </div>
+
+                    <div>
+                        <div class="secao-header" style="margin-bottom:8px;">
+                            <h4 style="font-size:0.95rem;color:#555;">Disciplinas alocadas</h4>
+                            <button class="btn-novo" onclick="abrirModalBoletimTurma()" style="font-size:0.8rem;padding:6px 12px;">+ Novo Boletim</button>
+                        </div>
+                        <div id="painelTurmaAlocacoes" class="lista-cards"></div>
+                    </div>
+                </div>
             </section>
 
             <!-- DISCIPLINAS -->
@@ -97,7 +121,7 @@
                     <button class="btn-novo" onclick="abrirModal('modalDisciplina')">+ Nova Disciplina</button>
                 </div>
                 <div class="busca-bar">
-                    <input type="text" id="buscaDisciplina" placeholder="Buscar por nome...">
+                    <input type="text" id="buscaDisciplina" placeholder="Buscar por nome..." oninput="debounce(buscarDisciplinas)">
                     <button onclick="buscarDisciplinas()">Buscar</button>
                     <button onclick="carregarDisciplinas()">Ver todos</button>
                 </div>
@@ -149,19 +173,43 @@
             <h3 id="painelAlunoNome"></h3>
             <button class="btn-fechar" onclick="fecharPainelAluno()">✕</button>
         </div>
-    
+
         <div class="painel-section">
             <h4>Dados Pessoais</h4>
             <div id="painelAlunoInfo" class="info-card"></div>
         </div>
+
         <div class="painel-section">
-            <h4>Boletim</h4>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+                <h4 style="margin:0;">Matrícula</h4>
+                <button class="btn-novo" id="btnMatricularAluno" style="font-size:0.8rem;padding:5px 10px;">Alterar turma</button>
+            </div>
+            <div id="painelAlunoTurma" class="info-card"></div>
+        </div>
+
+        <div class="painel-section">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+                <h4 style="margin:0;">Boletim</h4>
+                <button class="btn-novo" id="btnNovoBoletimAluno" style="font-size:0.8rem;padding:5px 10px;">+ Boletim</button>
+            </div>
             <div id="painelAlunoBoletins" class="lista-cards"></div>
         </div>
-        <div class="painel-header">
-            <h3 id="painelAlunoNome"></h3>
-            <div style="display:flex;gap:8px;align-items:center;">
-                <button class="btn-novo" id="btnNovoBoletimAluno">+ Boletim</button>
+    </div>
+
+    <!-- MODAL MATRÍCULA -->
+    <div class="modal-overlay" id="modalMatricula">
+        <div class="modal">
+            <h3>Alterar matrícula</h3>
+            <input type="hidden" id="matriculaAlunoId">
+            <div class="form-grupo">
+                <label>Turma</label>
+                <select id="matriculaTurmaSelect">
+                    <option value="">Sem turma (cancelar matrícula)</option>
+                </select>
+            </div>
+            <div class="modal-botoes">
+                <button class="btn-cancelar" onclick="fecharModal('modalMatricula')">Cancelar</button>
+                <button class="btn-salvar" onclick="salvarMatricula()">Salvar</button>
             </div>
         </div>
     </div>

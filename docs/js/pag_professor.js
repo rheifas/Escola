@@ -1,25 +1,40 @@
 const API = 'http://localhost:8080';
-let professorAtual = null;
+
+const token = localStorage.getItem('token');
+const idReferencia = parseInt(localStorage.getItem('idReferencia'));
+const nome = localStorage.getItem('nome');
 
 const perfil = localStorage.getItem('perfil');
 if (!token || perfil !== 'PROFESSOR') window.location.href = 'login.html';
 
+if (nome) document.getElementById('headerNome').textContent = `Olá, ${nome}`;
+
+function authFetch(url, options = {}) {
+    return fetch(url, {
+        ...options,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+            ...options.headers
+        }
+    });
+}
+
 // ==================== SIDEBAR ====================
-const btnToggle = document.getElementById('toggleBtn');
+const btn = document.getElementById('toggleBtn');
 const sidebar = document.getElementById('sidebar');
 const navItems = document.querySelectorAll('.nav-item');
 const paginas = document.querySelectorAll('.pagina');
 
-btnToggle.addEventListener('click', () => {
+btn.addEventListener('click', () => {
     sidebar.classList.toggle('collapsed');
     const isCollapsed = sidebar.classList.contains('collapsed');
-    btnToggle.setAttribute('aria-label', isCollapsed ? 'Expandir menu' : 'Minimizar menu');
+    btn.setAttribute('aria-label', isCollapsed ? 'Expandir menu' : 'Minimizar menu');
 });
 
 navItems.forEach(item => {
     item.addEventListener('click', (e) => {
         e.preventDefault();
-        if (!professorAtual) return;
         navItems.forEach(i => i.classList.remove('active'));
         item.classList.add('active');
         const target = item.getAttribute('data-target');
@@ -30,122 +45,142 @@ navItems.forEach(item => {
 });
 
 function carregarSecao(secao) {
-    if (secao === 'informacoes') renderInformacoes();
-    if (secao === 'disciplinas') carregarDisciplinas();
+    if (secao === 'informacoes') carregarInformacoes();
     if (secao === 'turmas') carregarTurmas();
 }
 
-// ==================== BUSCA DO PROFESSOR ====================
-async function buscarProfessor() {
-    const nome = document.getElementById('inputBuscaProfessor').value.trim();
-    if (!nome) return;
-
-    const res = await fetch(`${API}/funcionarios/nome?nome=${encodeURIComponent(nome)}`);
-    const lista = await res.json();
-
-    const professores = lista.filter(f => f.cargo === 'Professor');
-    const resultado = document.getElementById('resultadoBusca');
-
-    if (!professores.length) {
-        resultado.innerHTML = '<p class="vazio">Nenhum professor encontrado com esse nome.</p>';
-        return;
-    }
-
-    resultado.innerHTML = `
-        <p class="resultado-label">Selecione seu perfil:</p>
-        ${professores.map(p => `
-            <div class="resultado-item" onclick="selecionarProfessor(${p.id})">
-                <strong>${p.nome}</strong>
-                <span>CPF: ${p.cpf || '—'} | Formação: ${p.formacao || '—'}</span>
-            </div>
-        `).join('')}
-    `;
-}
-
-async function selecionarProfessor(id) {
-    const res = await fetch(`${API}/funcionarios/${id}`);
-    professorAtual = await res.json();
-
-    // Esconde busca e mostra conteúdo
-    document.getElementById('buscaProfessorBox').style.display = 'none';
-    document.getElementById('informacoes').classList.add('active');
-
-    renderInformacoes();
-}
-
 // ==================== INFORMAÇÕES ====================
-function renderInformacoes() {
-    const p = professorAtual;
+async function carregarInformacoes() {
+    const res = await authFetch(`${API}/professores/${idReferencia}`);
+    const p = await res.json();
+
     document.getElementById('dadosProfessor').innerHTML = `
         <div class="info-linha"><span class="info-label">Nome</span><span>${p.nome || '—'}</span></div>
         <div class="info-linha"><span class="info-label">CPF</span><span>${p.cpf || '—'}</span></div>
         <div class="info-linha"><span class="info-label">Telefone</span><span>${p.telefone || '—'}</span></div>
         <div class="info-linha"><span class="info-label">Endereço</span><span>${p.endereco || '—'}</span></div>
+        <div class="info-linha"><span class="info-label">Nascimento</span><span>${p.dataNascimento || '—'}</span></div>
         <div class="info-linha"><span class="info-label">Formação</span><span>${p.formacao || '—'}</span></div>
         <div class="info-linha"><span class="info-label">Cargo</span><span>${p.cargo || '—'}</span></div>
     `;
 }
 
-// ==================== DISCIPLINAS ====================
-async function carregarDisciplinas() {
-    const res = await fetch(`${API}/alocacoes/professor/${professorAtual.id}`);
-    const alocacoes = await res.json();
-    const lista = document.getElementById('listaDisciplinasProfessor');
-
-    if (!alocacoes.length) {
-        lista.innerHTML = '<p class="vazio">Nenhuma disciplina atribuída.</p>';
-        return;
-    }
-
-    // Agrupa disciplinas únicas
-    const disciplinas = [...new Map(alocacoes.map(a => [
-        a.idDisciplina || a.disciplina?.id,
-        { id: a.idDisciplina || a.disciplina?.id, nome: a.nomeDisciplina || a.disciplina?.nome }
-    ])).values()];
-
-    lista.innerHTML = disciplinas.map(d => `
-        <div class="card">
-            <div class="card-info">
-                <strong>${d.nome || '—'}</strong>
-            </div>
-        </div>
-    `).join('');
-}
-
 // ==================== TURMAS ====================
 async function carregarTurmas() {
-    const res = await fetch(`${API}/alocacoes/professor/${professorAtual.id}`);
+    const lista = document.getElementById('listaTurmas');
+    const painelBoletins = document.getElementById('painelBoletins');
+    painelBoletins.style.display = 'none';
+    lista.innerHTML = '<p class="vazio">Carregando...</p>';
+
+    const res = await authFetch(`${API}/alocacoes/professor/${idReferencia}`);
     const alocacoes = await res.json();
-    const lista = document.getElementById('listaTurmasProfessor');
 
     if (!alocacoes.length) {
-        lista.innerHTML = '<p class="vazio">Nenhuma turma atribuída.</p>';
+        lista.innerHTML = '<p class="vazio">Nenhuma turma alocada no momento.</p>';
         return;
     }
 
-    // Agrupa turmas únicas
-    const turmas = [...new Map(alocacoes.map(a => [
-        a.idTurma || a.turma?.id,
-        {
-            id: a.idTurma || a.turma?.id,
-            nome: a.nomeTurma || a.turma?.nome,
-            turno: a.turma?.turno || '—',
-            disciplina: a.nomeDisciplina || a.disciplina?.nome
-        }
-    ])).values()];
-
-    lista.innerHTML = turmas.map(t => `
-        <div class="card">
+    lista.innerHTML = alocacoes.map(a => `
+        <div class="card card-clicavel" onclick="abrirBoletins(${a.id}, '${a.disciplina?.nome || '—'}', '${a.turma?.nome || '—'}')">
             <div class="card-info">
-                <strong>${t.nome || '—'}</strong>
-                <span>Turno: ${t.turno}</span>
-                <span>Disciplina: ${t.disciplina || '—'}</span>
+                <strong>${a.disciplina?.nome || '—'}</strong>
+                <span>Turma: ${a.turma?.nome || '—'}</span>
+                <span>Ano Letivo: ${a.turma?.anoLetivo || '—'} — ${a.turma?.turno || '—'}</span>
             </div>
+            <span class="ver-mais">Ver alunos →</span>
         </div>
     `).join('');
 }
 
-// Enter na busca
-document.getElementById('inputBuscaProfessor').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') buscarProfessor();
-});
+async function abrirBoletins(alocacaoId, disciplina, turma) {
+    const painel = document.getElementById('painelBoletins');
+    painel.style.display = 'block';
+    painel.innerHTML = `
+        <div class="painel-header">
+            <div>
+                <h3>${disciplina}</h3>
+                <span class="painel-subtitulo">Turma: ${turma}</span>
+            </div>
+            <button class="btn-fechar" onclick="fecharBoletins()">✕</button>
+        </div>
+        <p class="vazio">Carregando alunos...</p>
+    `;
+    painel.scrollIntoView({ behavior: 'smooth' });
+
+    const res = await authFetch(`${API}/boletins/alocacao/${alocacaoId}`);
+    const boletins = await res.json();
+
+    if (!boletins.length) {
+        painel.querySelector('p.vazio').textContent = 'Nenhum aluno encontrado nesta alocação.';
+        return;
+    }
+
+    const linhas = boletins.map(b => {
+        const nota = b.nota !== null && b.nota !== undefined ? b.nota.toFixed(1) : '—';
+        const freq = b.frequencia !== null && b.frequencia !== undefined ? b.frequencia.toFixed(1) + '%' : '—';
+        const situacao = b.nota >= 7 ? 'aprovado' : b.nota < 5 ? 'reprovado' : 'recuperacao';
+        const labelSit = b.nota >= 7 ? 'Aprovado' : b.nota < 5 ? 'Reprovado' : 'Em Recuperação';
+        return `
+            <tr>
+                <td>${b.aluno?.nome || '—'}</td>
+                <td>${b.aluno?.cpf || '—'}</td>
+                <td>
+                    <input class="input-nota" type="number" min="0" max="10" step="0.1"
+                        value="${b.nota !== null && b.nota !== undefined ? b.nota : ''}"
+                        placeholder="—"
+                        onchange="salvarNota(${b.id}, this.value, ${b.frequencia})">
+                </td>
+                <td>
+                    <input class="input-nota" type="number" min="0" max="100" step="0.1"
+                        value="${b.frequencia !== null && b.frequencia !== undefined ? b.frequencia : ''}"
+                        placeholder="—"
+                        onchange="salvarNota(${b.id}, ${b.nota}, this.value)">
+                </td>
+                <td><span class="badge ${b.nota !== null ? situacao : ''}">${b.nota !== null ? labelSit : '—'}</span></td>
+            </tr>
+        `;
+    }).join('');
+
+    painel.innerHTML = `
+        <div class="painel-header">
+            <div>
+                <h3>${disciplina}</h3>
+                <span class="painel-subtitulo">Turma: ${turma}</span>
+            </div>
+            <button class="btn-fechar" onclick="fecharBoletins()">✕</button>
+        </div>
+        <div class="tabela-wrapper">
+            <table class="tabela-boletins">
+                <thead>
+                    <tr>
+                        <th>Aluno</th>
+                        <th>CPF</th>
+                        <th>Nota</th>
+                        <th>Frequência (%)</th>
+                        <th>Situação</th>
+                    </tr>
+                </thead>
+                <tbody>${linhas}</tbody>
+            </table>
+        </div>
+    `;
+}
+
+async function salvarNota(boletimId, nota, frequencia) {
+    const notaNum = nota !== null && nota !== '' ? parseFloat(nota) : null;
+    const freqNum = frequencia !== null && frequencia !== '' ? parseFloat(frequencia) : null;
+
+    const res = await authFetch(`${API}/boletins/${boletimId}`, {
+        method: 'PUT',
+        body: JSON.stringify({ nota: notaNum, frequencia: freqNum })
+    });
+
+    if (!res.ok) alert('Erro ao salvar. Tente novamente.');
+}
+
+function fecharBoletins() {
+    document.getElementById('painelBoletins').style.display = 'none';
+}
+
+// Carrega seção inicial
+carregarInformacoes();

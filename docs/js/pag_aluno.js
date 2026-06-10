@@ -54,12 +54,36 @@ function carregarSecao(secao) {
 async function carregarInformacoes() {
     const res = await authFetch(`${API}/alunos/${idReferencia}`);
     const aluno = await res.json();
+
+    const responsaveisHTML = aluno.responsaveis && aluno.responsaveis.length
+        ? aluno.responsaveis.map(r => `
+            <div class="responsavel-card">
+                <div class="responsavel-campo">
+                    <span class="responsavel-label">Nome</span>
+                    <span>${r.nome || '—'}</span>
+                </div>
+                <div class="responsavel-campo">
+                    <span class="responsavel-label">CPF</span>
+                    <span>${r.cpf || '—'}</span>
+                </div>
+                <div class="responsavel-campo">
+                    <span class="responsavel-label">Telefone</span>
+                    <span>${r.telefone || '—'}</span>
+                </div>
+            </div>
+        `).join('')
+        : '<span class="vazio-inline">Nenhum responsável cadastrado</span>';
+
     document.getElementById('dadosAluno').innerHTML = `
         <div class="info-linha"><span class="info-label">Nome</span><span>${aluno.nome || '—'}</span></div>
         <div class="info-linha"><span class="info-label">CPF</span><span>${aluno.cpf || '—'}</span></div>
         <div class="info-linha"><span class="info-label">Telefone</span><span>${aluno.telefone || '—'}</span></div>
         <div class="info-linha"><span class="info-label">Endereço</span><span>${aluno.endereco || '—'}</span></div>
         <div class="info-linha"><span class="info-label">Nascimento</span><span>${aluno.dataNascimento || '—'}</span></div>
+        <div class="info-linha info-linha-responsaveis">
+            <span class="info-label">Responsáveis</span>
+            <div class="info-responsaveis">${responsaveisHTML}</div>
+        </div>
     `;
 }
 

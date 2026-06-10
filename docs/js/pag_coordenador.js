@@ -19,6 +19,12 @@ function authFetch(url, options = {}) {
     });
 }
 
+let debounceTimer;
+function debounce(fn, delay = 300) {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(fn, delay);
+}
+
 // ==================== SIDEBAR ====================
 const btn = document.getElementById('toggleBtn');
 const sidebar = document.getElementById('sidebar');
@@ -39,6 +45,7 @@ navItems.forEach(item => {
         paginas.forEach(p => p.classList.remove('active'));
         document.getElementById(target).classList.add('active');
         fecharPainelAluno();
+        fecharPainelTurma();
         carregarSecao(target);
     });
 });
@@ -98,6 +105,26 @@ function mascaraTel(input) {
     v = v.replace(/(\d{2})(\d)/, '($1) $2').replace(/(\d{5})(\d)/, '$1-$2');
     input.value = v;
 }
+function limparCpf(cpf) {
+    return cpf.replace(/\D/g, ''); // remove tudo que não for dígito
+}
+function formatarCpf(cpf) {
+    if (!cpf) return '—';
+    const d = cpf.replace(/\D/g, '');
+    return d.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+}
+function limparNumero(tel) {
+    return tel.replace(/\D/g, '');
+}
+function formatarTelefone(tel) {
+    if (!tel) return '—';
+    const d = tel.replace(/\D/g, '');
+    if (d.length === 11)
+        return d.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+    if (d.length === 10)
+        return d.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+    return tel;
+}
 document.getElementById('alunoCpf').addEventListener('input', function () { mascaraCpf(this); });
 document.getElementById('alunoTel').addEventListener('input', function () { mascaraTel(this); });
 document.getElementById('professorCpf').addEventListener('input', function () { mascaraCpf(this); });
@@ -114,16 +141,29 @@ async function abrirPainelAluno(id) {
 
     document.getElementById('painelAluno').style.display = 'flex';
     document.getElementById('painelAlunoNome').textContent = aluno.nome;
-    document.getElementById('btnNovoBoletimAluno').onclick = () => {
-        abrirModalBoletimParaAluno(aluno.id);
-    };
+
+    // Botão de matrícula
+    document.getElementById('btnMatricularAluno').onclick = () => abrirModalMatricula(aluno);
+
+    // Botão de boletim
+    document.getElementById('btnNovoBoletimAluno').onclick = () => abrirModalBoletimParaAluno(aluno);
+
+    // Dados pessoais
     document.getElementById('painelAlunoInfo').innerHTML = `
-        <div class="info-linha"><span class="info-label">CPF: </span><span>${aluno.cpf || '—'}</span></div>
-        <div class="info-linha"><span class="info-label">Telefone: </span><span>${aluno.telefone || '—'}</span></div>
+        <div class="info-linha"><span class="info-label">CPF: </span><span>${formatarCpf(aluno.cpf) || '—'}</span></div>
+        <div class="info-linha"><span class="info-label">Telefone: </span><span>${formatarTelefone(aluno.telefone) || '—'}</span></div>
         <div class="info-linha"><span class="info-label">Endereço: </span><span>${aluno.endereco || '—'}</span></div>
         <div class="info-linha"><span class="info-label">Data de Nascimento: </span><span>${aluno.dataNascimento || '—'}</span></div>
     `;
 
+    // Turma
+    document.getElementById('painelAlunoTurma').innerHTML = aluno.turma
+        ? `<div class="info-linha"><span class="info-label">Turma: </span><span><strong>${aluno.turma.nome}</strong></span></div>
+           <div class="info-linha"><span class="info-label">Ano: </span><span>${aluno.turma.anoLetivo || '—'}</span></div>
+           <div class="info-linha"><span class="info-label">Turno: </span><span>${aluno.turma.turno || '—'}</span></div>`
+        : `<p class="vazio" style="margin:0;">Aluno não matriculado em nenhuma turma.</p>`;
+
+    // Boletim
     document.getElementById('painelAlunoBoletins').innerHTML = !boletins.length
         ? '<p class="vazio">Nenhum boletim cadastrado.</p>'
         : boletins.map(b => {
@@ -145,26 +185,91 @@ async function abrirPainelAluno(id) {
                     </div>
                 </div>`;
         }).join('');
-
-
-    async function abrirModalBoletimParaAluno(idAluno) {
-        await preencherSelectBoletim();
-        document.getElementById('boletimId').value = '';
-        document.getElementById('boletimAluno').value = idAluno;
-        document.getElementById('boletimAluno').disabled = true;
-        document.getElementById('modalBoletimTitulo').textContent = 'Novo Boletim';
-        document.getElementById('modalBoletim').style.display = 'flex';
-    }
-    function fecharModal(id) {
-        document.getElementById(id).style.display = 'none';
-        document.querySelectorAll(`#${id} input:not([type=hidden])`).forEach(i => i.value = '');
-        document.querySelectorAll(`#${id} select`).forEach(s => { s.value = ''; s.disabled = false; });
-        document.querySelectorAll(`#${id} input[type=hidden]`).forEach(i => i.value = '');
-    }
 }
 
 function fecharPainelAluno() {
     document.getElementById('painelAluno').style.display = 'none';
+}
+
+// ==================== MATRÍCULA ====================
+
+// Abre modal de matrícula a partir do painel do aluno
+async function abrirModalMatricula(aluno) {
+    const res = await authFetch(`${API}/turmas`);
+    const turmas = await res.json();
+    document.getElementById('matriculaAlunoId').value = aluno.id;
+    const sel = document.getElementById('matriculaTurmaSelect');
+    sel.innerHTML = '<option value="">Sem turma (cancelar matrícula)</option>' +
+        turmas.map(t => `<option value="${t.id}" ${aluno.turma?.id === t.id ? 'selected' : ''}>${t.nome} — ${t.turno}</option>`).join('');
+    document.getElementById('modalMatricula').style.display = 'flex';
+}
+
+// Abre seleção de aluno para matricular a partir do painel da turma
+async function abrirModalMatricularNaTurma() {
+    if (!turmaSelecionada) return;
+    const res = await authFetch(`${API}/alunos`);
+    const todos = await res.json();
+    const disponiveis = todos.filter(a => !a.turma || a.turma.id !== turmaSelecionada.id);
+    if (!disponiveis.length) { toast('Todos os alunos já estão nesta turma.', 'erro'); return; }
+    const opcoes = disponiveis.map(a => `${a.id}: ${a.nome}${a.turma ? ' (turma: ' + a.turma.nome + ')' : ''}`).join('');
+    const input = prompt(`ID do aluno para matricular em "${turmaSelecionada.nome}": ${opcoes}`);
+    if (!input) return;
+    const aluno = disponiveis.find(a => a.id === parseInt(input));
+    if (!aluno) { toast('ID inválido.', 'erro'); return; }
+    await executarMatricula(aluno, turmaSelecionada.id);
+    await abrirPainelTurma(turmaSelecionada.id, turmaSelecionada.nome);
+}
+
+// Salva matrícula vinda do modal do aluno
+async function salvarMatricula() {
+    const idAluno = parseInt(document.getElementById('matriculaAlunoId').value);
+    const idTurma = document.getElementById('matriculaTurmaSelect').value;
+    const res = await authFetch(`${API}/alunos/${idAluno}`);
+    const aluno = await res.json();
+    await executarMatricula(aluno, idTurma ? parseInt(idTurma) : null);
+    fecharModal('modalMatricula');
+    abrirPainelAluno(idAluno);
+}
+
+// Executa o PUT com idTurma atualizado
+async function executarMatricula(aluno, idTurma) {
+    const dados = {
+        nome: aluno.nome,
+        cpf: aluno.cpf,
+        dataNascimento: aluno.dataNascimento,
+        telefone: aluno.telefone,
+        endereco: aluno.endereco,
+        idTurma: idTurma
+    };
+    const res = await authFetch(`${API}/alunos/${aluno.id}`, { method: 'PUT', body: JSON.stringify(dados) });
+    if (res.ok) {
+        toast(idTurma ? 'Aluno matriculado!' : 'Matrícula cancelada.');
+        carregarAlunos();
+    } else {
+        toast('Erro ao atualizar matrícula.', 'erro');
+    }
+}
+
+// Abre modal de boletim para um aluno, filtrando alocações pela turma dele
+async function abrirModalBoletimParaAluno(aluno) {
+    let alocacoes;
+    if (aluno.turma) {
+        const res = await authFetch(`${API}/alocacoes/turma/${aluno.turma.id}`);
+        alocacoes = await res.json();
+    } else {
+        const res = await authFetch(`${API}/alocacoes`);
+        alocacoes = await res.json();
+    }
+    document.getElementById('boletimAluno').innerHTML = `<option value="${aluno.id}">${aluno.nome}</option>`;
+    document.getElementById('boletimAlocacao').innerHTML =
+        '<option value="">Selecione a disciplina</option>' +
+        alocacoes.map(a => `<option value="${a.id}">${a.disciplina?.nome || '—'} — Prof. ${a.professor?.nome || '—'}</option>`).join('');
+    document.getElementById('boletimId').value = '';
+    document.getElementById('boletimNota').value = '';
+    document.getElementById('boletimFrequencia').value = '';
+    document.getElementById('boletimAluno').disabled = true;
+    document.getElementById('modalBoletimTitulo').textContent = `Novo Boletim — ${aluno.nome}`;
+    document.getElementById('modalBoletim').style.display = 'flex';
 }
 
 // ==================== ALUNOS ====================
@@ -186,8 +291,8 @@ function renderAlunos(alunos) {
         <div class="card card-clicavel" onclick="abrirPainelAluno(${a.id})">
             <div class="card-info">
                 <strong>${a.nome}</strong>
-                <span>CPF: ${a.cpf || '—'}</span>
-                <span>Tel: ${a.telefone || '—'}</span>
+                <span>CPF: ${formatarCpf(a.cpf) || '—'}</span>
+                <span>Tel: ${formatarTelefone(a.telefone) || '—'}</span>
             </div>
             <div class="card-acoes" onclick="event.stopPropagation()">
                 <button class="btn-editar" onclick="editarAluno(${a.id})">✏️</button>
@@ -200,9 +305,9 @@ async function editarAluno(id) {
     const a = await res.json();
     document.getElementById('alunoId').value = a.id;
     document.getElementById('alunoNome').value = a.nome || '';
-    document.getElementById('alunoCpf').value = a.cpf || '';
+    document.getElementById('alunoCpf').value = formatarCpf(a.cpf) || '';
     document.getElementById('alunoNasc').value = a.dataNascimento || '';
-    document.getElementById('alunoTel').value = a.telefone || '';
+    document.getElementById('alunoTel').value = formatarTelefone(a.telefone) || '';
     document.getElementById('alunoEndereco').value = a.endereco || '';
     document.getElementById('modalAlunoTitulo').textContent = 'Editar Aluno';
     abrirModal('modalAluno');
@@ -211,9 +316,9 @@ async function salvarAluno() {
     const id = document.getElementById('alunoId').value;
     const dados = {
         nome: document.getElementById('alunoNome').value,
-        cpf: document.getElementById('alunoCpf').value || null,
+        cpf: limparCpf(document.getElementById('alunoCpf').value) || null,
         dataNascimento: document.getElementById('alunoNasc').value || null,
-        telefone: document.getElementById('alunoTel').value || null,
+        telefone: limparNumero(document.getElementById('alunoTel').value) || null,
         endereco: document.getElementById('alunoEndereco').value || null
     };
     if (!dados.nome) { toast('Nome é obrigatório!', 'erro'); return; }
@@ -246,7 +351,7 @@ function renderProfessores(profs) {
         <div class="card">
             <div class="card-info">
                 <strong>${p.nome}</strong>
-                <span>CPF: ${p.cpf || '—'}</span>
+                <span>CPF: ${formatarCpf(p.cpf) || '—'}</span>
                 <span>Formação: ${p.formacao || '—'}</span>
             </div>
             <div class="card-acoes">
@@ -260,9 +365,9 @@ async function editarProfessor(id) {
     const p = await res.json();
     document.getElementById('professorId').value = p.id;
     document.getElementById('professorNome').value = p.nome || '';
-    document.getElementById('professorCpf').value = p.cpf || '';
+    document.getElementById('professorCpf').value = formatarCpf(p.cpf) || '';
     document.getElementById('professorNasc').value = p.dataNascimento || '';
-    document.getElementById('professorTel').value = p.telefone || '';
+    document.getElementById('professorTel').value = formatarTelefone(p.telefone) || '';
     document.getElementById('professorEndereco').value = p.endereco || '';
     document.getElementById('professorFormacao').value = p.formacao || '';
     document.getElementById('modalProfessorTitulo').textContent = 'Editar Professor';
@@ -272,9 +377,9 @@ async function salvarProfessor() {
     const id = document.getElementById('professorId').value;
     const dados = {
         nome: document.getElementById('professorNome').value,
-        cpf: document.getElementById('professorCpf').value,
+        cpf: limparCpf(document.getElementById('professorCpf').value),
         dataNascimento: document.getElementById('professorNasc').value || null,
-        telefone: document.getElementById('professorTel').value || null,
+        telefone: limparNumero(document.getElementById('professorTel').value) || null,
         endereco: document.getElementById('professorEndereco').value || null,
         formacao: document.getElementById('professorFormacao').value || null,
         cargo: 'Professor'
@@ -292,6 +397,8 @@ async function deletarProfessor(id) {
 }
 
 // ==================== TURMAS ====================
+let turmaSelecionada = null; // guarda { id, nome } da turma aberta no painel
+
 async function carregarTurmas() {
     const res = await authFetch(`${API}/turmas`);
     renderTurmas(await res.json());
@@ -303,21 +410,109 @@ async function buscarTurmas() {
     renderTurmas(await res.json());
 }
 function renderTurmas(turmas) {
+    fecharPainelTurma();
     const lista = document.getElementById('listaTurmas');
     if (!turmas.length) { lista.innerHTML = '<p class="vazio">Nenhuma turma encontrada.</p>'; return; }
     lista.innerHTML = turmas.map(t => `
-        <div class="card">
+        <div class="card card-clicavel" onclick="abrirPainelTurma(${t.id}, '${t.nome}')">
             <div class="card-info">
                 <strong>${t.nome}</strong>
                 <span>Ano: ${t.anoLetivo}</span>
                 <span>Turno: ${t.turno}</span>
             </div>
-            <div class="card-acoes">
+            <div class="card-acoes" onclick="event.stopPropagation()">
                 <button class="btn-editar" onclick="editarTurma(${t.id})">✏️</button>
                 <button class="btn-deletar" onclick="deletarTurma(${t.id})">🗑️</button>
             </div>
         </div>`).join('');
 }
+
+async function abrirPainelTurma(id, nome) {
+    turmaSelecionada = { id, nome };
+    document.getElementById('painelTurmaNome').textContent = nome;
+    document.getElementById('painelTurma').style.display = 'block';
+    document.getElementById('painelTurmaAlunos').innerHTML = '<p class="vazio">Carregando...</p>';
+    document.getElementById('painelTurmaAlocacoes').innerHTML = '<p class="vazio">Carregando...</p>';
+
+    // Busca alunos e alocações da turma em paralelo
+    const [resAlunos, resAlocacoes] = await Promise.all([
+        authFetch(`${API}/alunos/turma/${id}`),
+        authFetch(`${API}/alocacoes/turma/${id}`)
+    ]);
+    const alunos = await resAlunos.json();
+    const alocacoes = await resAlocacoes.json();
+
+    // Renderiza alunos
+    const listaAlunos = document.getElementById('painelTurmaAlunos');
+    if (!alunos.length) {
+        listaAlunos.innerHTML = '<p class="vazio">Nenhum aluno matriculado nesta turma.</p>';
+    } else {
+        listaAlunos.innerHTML = alunos.map(a => `
+            <div class="card card-clicavel" onclick="abrirPainelAluno(${a.id})">
+                <div class="card-info">
+                    <strong>${a.nome}</strong>
+                    <span>CPF: ${formatarCpf(a.cpf) || '—'}</span>
+                    <span>Tel: ${formatarTelefone(a.telefone) || '—'}</span>
+                </div>
+            </div>`).join('');
+    }
+
+    // Renderiza alocações
+    const listaAlocacoes = document.getElementById('painelTurmaAlocacoes');
+    if (!alocacoes.length) {
+        listaAlocacoes.innerHTML = '<p class="vazio">Nenhuma disciplina alocada nesta turma.</p>';
+    } else {
+        listaAlocacoes.innerHTML = alocacoes.map(a => `
+            <div class="card">
+                <div class="card-info">
+                    <strong>${a.disciplina?.nome || '—'}</strong>
+                    <span>Professor: ${a.professor?.nome || '—'}</span>
+                </div>
+            </div>`).join('');
+    }
+
+    // Rola até o painel
+    document.getElementById('painelTurma').scrollIntoView({ behavior: 'smooth' });
+}
+
+function fecharPainelTurma() {
+    turmaSelecionada = null;
+    document.getElementById('painelTurma').style.display = 'none';
+}
+
+// Abre modal de boletim pré-filtrado pela turma selecionada
+async function abrirModalBoletimTurma() {
+    if (!turmaSelecionada) return;
+
+    // Busca alunos e alocações apenas da turma atual
+    const [resAlunos, resAlocacoes] = await Promise.all([
+        authFetch(`${API}/alunos/turma/${turmaSelecionada.id}`),
+        authFetch(`${API}/alocacoes/turma/${turmaSelecionada.id}`)
+    ]);
+    const alunos = await resAlunos.json();
+    const alocacoes = await resAlocacoes.json();
+
+    if (!alunos.length) { toast('Nenhum aluno matriculado nesta turma.', 'erro'); return; }
+    if (!alocacoes.length) { toast('Nenhuma disciplina alocada nesta turma.', 'erro'); return; }
+
+    // Preenche selects apenas com dados da turma
+    document.getElementById('boletimAluno').innerHTML =
+        '<option value="">Selecione o aluno</option>' +
+        alunos.map(a => `<option value="${a.id}">${a.nome}</option>`).join('');
+
+    document.getElementById('boletimAlocacao').innerHTML =
+        '<option value="">Selecione a disciplina</option>' +
+        alocacoes.map(a => `<option value="${a.id}">${a.disciplina?.nome || '—'} — Prof. ${a.professor?.nome || '—'}</option>`).join('');
+
+    // Limpa campos e abre modal
+    document.getElementById('boletimId').value = '';
+    document.getElementById('boletimNota').value = '';
+    document.getElementById('boletimFrequencia').value = '';
+    document.getElementById('boletimAluno').disabled = false;
+    document.getElementById('modalBoletimTitulo').textContent = `Novo Boletim — ${turmaSelecionada.nome}`;
+    document.getElementById('modalBoletim').style.display = 'flex';
+}
+
 async function editarTurma(id) {
     const res = await authFetch(`${API}/turmas/${id}`);
     const t = await res.json();
@@ -339,7 +534,7 @@ async function salvarTurma() {
 async function deletarTurma(id) {
     if (!confirm('Deseja deletar esta turma?')) return;
     const res = await authFetch(`${API}/turmas/${id}`, { method: 'DELETE' });
-    if (res.ok) { toast('Turma deletada!'); carregarTurmas(); }
+    if (res.ok) { toast('Turma deletada!'); fecharPainelTurma(); carregarTurmas(); }
     else toast('Erro ao deletar turma.', 'erro');
 }
 
