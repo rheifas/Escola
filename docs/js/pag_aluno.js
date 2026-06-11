@@ -74,12 +74,24 @@ async function carregarInformacoes() {
         `).join('')
         : '<span class="vazio-inline">Nenhum responsável cadastrado</span>';
 
-    document.getElementById('dadosAluno').innerHTML = `
+        document.getElementById('dadosAluno').innerHTML = `
         <div class="info-linha"><span class="info-label">Nome</span><span>${aluno.nome || '—'}</span></div>
         <div class="info-linha"><span class="info-label">CPF</span><span>${aluno.cpf || '—'}</span></div>
         <div class="info-linha"><span class="info-label">Telefone</span><span>${aluno.telefone || '—'}</span></div>
         <div class="info-linha"><span class="info-label">Endereço</span><span>${aluno.endereco || '—'}</span></div>
         <div class="info-linha"><span class="info-label">Nascimento</span><span>${aluno.dataNascimento || '—'}</span></div>
+    
+        <div class="info-linha">
+            <span class="info-label">Turma</span>
+            <span>
+                ${
+                    aluno.turma
+                    ? `${aluno.turma.nome} - ${aluno.turma.turno} (${aluno.turma.anoLetivo})`
+                    : 'Não matriculado'
+                }
+            </span>
+        </div>
+    
         <div class="info-linha info-linha-responsaveis">
             <span class="info-label">Responsáveis</span>
             <div class="info-responsaveis">${responsaveisHTML}</div>

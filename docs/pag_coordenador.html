@@ -335,6 +335,52 @@
         </div>
     </div>
 
+    <!-- MODAL RESPONSÁVEL -->
+    <div class="modal-overlay" id="modalResponsavel">
+        <div class="modal">
+            <h3>Editar Responsável</h3>
+
+            <input type="hidden" id="responsavelId">
+
+            <div class="form-grupo">
+                <label>Nome *</label>
+                <input type="text" id="responsavelNome">
+            </div>
+
+            <div class="form-grupo">
+                <label>CPF *</label>
+                <input type="text" id="responsavelCpf" maxlength="14">
+            </div>
+
+            <div class="form-grupo">
+                <label>Data de Nascimento</label>
+                <input type="date" id="responsavelNascimento">
+            </div>
+
+            <div class="form-grupo">
+                <label>Telefone</label>
+                <input type="text" id="responsavelTel" maxlength="15">
+            </div>
+
+            <div class="form-grupo">
+                <label>Endereço</label>
+                <input type="text" id="responsavelEndereco">
+            </div>
+
+            <div class="modal-acoes">
+                <button class="btn-cancelar"
+                    onclick="fecharModal('modalResponsavel')">
+                    Cancelar
+                </button>
+
+                <button class="btn-salvar"
+                    onclick="salvarResponsavel()">
+                    Salvar
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script src="js/pag_coordenador.js"></script>
 </body>
 

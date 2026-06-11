@@ -105,24 +105,18 @@ function mascaraTel(input) {
     v = v.replace(/(\d{2})(\d)/, '($1) $2').replace(/(\d{5})(\d)/, '$1-$2');
     input.value = v;
 }
-function limparCpf(cpf) {
-    return cpf.replace(/\D/g, ''); // remove tudo que não for dígito
-}
+function limparCpf(cpf) { return cpf.replace(/\D/g, ''); }
 function formatarCpf(cpf) {
     if (!cpf) return '—';
     const d = cpf.replace(/\D/g, '');
     return d.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
 }
-function limparNumero(tel) {
-    return tel.replace(/\D/g, '');
-}
+function limparNumero(tel) { return tel.replace(/\D/g, ''); }
 function formatarTelefone(tel) {
     if (!tel) return '—';
     const d = tel.replace(/\D/g, '');
-    if (d.length === 11)
-        return d.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
-    if (d.length === 10)
-        return d.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+    if (d.length === 11) return d.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+    if (d.length === 10) return d.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
     return tel;
 }
 document.getElementById('alunoCpf').addEventListener('input', function () { mascaraCpf(this); });
@@ -142,10 +136,7 @@ async function abrirPainelAluno(id) {
     document.getElementById('painelAluno').style.display = 'flex';
     document.getElementById('painelAlunoNome').textContent = aluno.nome;
 
-    // Botão de matrícula
     document.getElementById('btnMatricularAluno').onclick = () => abrirModalMatricula(aluno);
-
-    // Botão de boletim
     document.getElementById('btnNovoBoletimAluno').onclick = () => abrirModalBoletimParaAluno(aluno);
 
     // Dados pessoais
@@ -153,7 +144,41 @@ async function abrirPainelAluno(id) {
         <div class="info-linha"><span class="info-label">CPF: </span><span>${formatarCpf(aluno.cpf) || '—'}</span></div>
         <div class="info-linha"><span class="info-label">Telefone: </span><span>${formatarTelefone(aluno.telefone) || '—'}</span></div>
         <div class="info-linha"><span class="info-label">Endereço: </span><span>${aluno.endereco || '—'}</span></div>
-        <div class="info-linha"><span class="info-label">Data de Nascimento: </span><span>${aluno.dataNascimento || '—'}</span></div>
+        <div class="info-linha"><span class="info-label">Nascimento: </span><span>${aluno.dataNascimento || '—'}</span></div>
+        <div class="info-linha info-linha-responsaveis">
+            <span class="info-label">Responsáveis: </span>
+            <div class="info-responsaveis">
+            ${aluno.responsaveis && aluno.responsaveis.length
+                ? aluno.responsaveis.map(r => `
+                    <div class="responsavel-card">
+            
+                        <div class="responsavel-campo">
+                            <span class="responsavel-label">Nome: </span>
+                            <span>${r.nome || '—'}</span>
+                        </div>
+            
+                        <div class="responsavel-campo">
+                            <span class="responsavel-label">CPF: </span>
+                            <span>${formatarCpf(r.cpf) || '—'}</span>
+                        </div>
+            
+                        <div class="responsavel-campo">
+                            <span class="responsavel-label">Telefone: </span>
+                            <span>${formatarTelefone(r.telefone) || '—'}</span>
+                        </div>
+            
+                        <button
+                            class="btn-editar"
+                            onclick="abrirModalResponsavel(${r.id})">
+                            ✏️ Editar
+                        </button>
+            
+                    </div>
+                `).join('')
+                : '<span class="vazio-inline">Nenhum responsável cadastrado</span>'
+            }
+            </div>
+        </div>
     `;
 
     // Turma
@@ -192,8 +217,6 @@ function fecharPainelAluno() {
 }
 
 // ==================== MATRÍCULA ====================
-
-// Abre modal de matrícula a partir do painel do aluno
 async function abrirModalMatricula(aluno) {
     const res = await authFetch(`${API}/turmas`);
     const turmas = await res.json();
@@ -204,7 +227,6 @@ async function abrirModalMatricula(aluno) {
     document.getElementById('modalMatricula').style.display = 'flex';
 }
 
-// Abre seleção de aluno para matricular a partir do painel da turma
 async function abrirModalMatricularNaTurma() {
     if (!turmaSelecionada) return;
     const res = await authFetch(`${API}/alunos`);
@@ -220,7 +242,6 @@ async function abrirModalMatricularNaTurma() {
     await abrirPainelTurma(turmaSelecionada.id, turmaSelecionada.nome);
 }
 
-// Salva matrícula vinda do modal do aluno
 async function salvarMatricula() {
     const idAluno = parseInt(document.getElementById('matriculaAlunoId').value);
     const idTurma = document.getElementById('matriculaTurmaSelect').value;
@@ -231,7 +252,6 @@ async function salvarMatricula() {
     abrirPainelAluno(idAluno);
 }
 
-// Executa o PUT com idTurma atualizado
 async function executarMatricula(aluno, idTurma) {
     const dados = {
         nome: aluno.nome,
@@ -250,7 +270,6 @@ async function executarMatricula(aluno, idTurma) {
     }
 }
 
-// Abre modal de boletim para um aluno, filtrando alocações pela turma dele
 async function abrirModalBoletimParaAluno(aluno) {
     let alocacoes;
     if (aluno.turma) {
@@ -397,7 +416,7 @@ async function deletarProfessor(id) {
 }
 
 // ==================== TURMAS ====================
-let turmaSelecionada = null; // guarda { id, nome } da turma aberta no painel
+let turmaSelecionada = null;
 
 async function carregarTurmas() {
     const res = await authFetch(`${API}/turmas`);
@@ -434,7 +453,6 @@ async function abrirPainelTurma(id, nome) {
     document.getElementById('painelTurmaAlunos').innerHTML = '<p class="vazio">Carregando...</p>';
     document.getElementById('painelTurmaAlocacoes').innerHTML = '<p class="vazio">Carregando...</p>';
 
-    // Busca alunos e alocações da turma em paralelo
     const [resAlunos, resAlocacoes] = await Promise.all([
         authFetch(`${API}/alunos/turma/${id}`),
         authFetch(`${API}/alocacoes/turma/${id}`)
@@ -442,7 +460,6 @@ async function abrirPainelTurma(id, nome) {
     const alunos = await resAlunos.json();
     const alocacoes = await resAlocacoes.json();
 
-    // Renderiza alunos
     const listaAlunos = document.getElementById('painelTurmaAlunos');
     if (!alunos.length) {
         listaAlunos.innerHTML = '<p class="vazio">Nenhum aluno matriculado nesta turma.</p>';
@@ -457,7 +474,6 @@ async function abrirPainelTurma(id, nome) {
             </div>`).join('');
     }
 
-    // Renderiza alocações
     const listaAlocacoes = document.getElementById('painelTurmaAlocacoes');
     if (!alocacoes.length) {
         listaAlocacoes.innerHTML = '<p class="vazio">Nenhuma disciplina alocada nesta turma.</p>';
@@ -471,7 +487,6 @@ async function abrirPainelTurma(id, nome) {
             </div>`).join('');
     }
 
-    // Rola até o painel
     document.getElementById('painelTurma').scrollIntoView({ behavior: 'smooth' });
 }
 
@@ -480,11 +495,9 @@ function fecharPainelTurma() {
     document.getElementById('painelTurma').style.display = 'none';
 }
 
-// Abre modal de boletim pré-filtrado pela turma selecionada
 async function abrirModalBoletimTurma() {
     if (!turmaSelecionada) return;
 
-    // Busca alunos e alocações apenas da turma atual
     const [resAlunos, resAlocacoes] = await Promise.all([
         authFetch(`${API}/alunos/turma/${turmaSelecionada.id}`),
         authFetch(`${API}/alocacoes/turma/${turmaSelecionada.id}`)
@@ -495,7 +508,6 @@ async function abrirModalBoletimTurma() {
     if (!alunos.length) { toast('Nenhum aluno matriculado nesta turma.', 'erro'); return; }
     if (!alocacoes.length) { toast('Nenhuma disciplina alocada nesta turma.', 'erro'); return; }
 
-    // Preenche selects apenas com dados da turma
     document.getElementById('boletimAluno').innerHTML =
         '<option value="">Selecione o aluno</option>' +
         alunos.map(a => `<option value="${a.id}">${a.nome}</option>`).join('');
@@ -504,7 +516,6 @@ async function abrirModalBoletimTurma() {
         '<option value="">Selecione a disciplina</option>' +
         alocacoes.map(a => `<option value="${a.id}">${a.disciplina?.nome || '—'} — Prof. ${a.professor?.nome || '—'}</option>`).join('');
 
-    // Limpa campos e abre modal
     document.getElementById('boletimId').value = '';
     document.getElementById('boletimNota').value = '';
     document.getElementById('boletimFrequencia').value = '';
@@ -745,6 +756,70 @@ async function atribuirFuncionario(id, idAluno, assunto, data) {
     });
     if (resSave.ok) { toast('Funcionário atribuído!'); carregarAtendimentos(); }
     else toast('Erro ao atribuir funcionário.', 'erro');
+}
+
+async function abrirModalResponsavel(id) {
+
+    const response =
+        await authFetch(`${API}/responsaveis/${id}`);
+
+    const r = await response.json();
+
+    document.getElementById('responsavelId').value = r.id;
+    document.getElementById('responsavelNome').value = r.nome || '';
+    document.getElementById('responsavelCpf').value = formatarCpf(r.cpf || '');
+    document.getElementById('responsavelTel').value = formatarTelefone(r.telefone || '');
+    document.getElementById('responsavelEndereco').value = r.endereco || '';
+    document.getElementById('responsavelNascimento').value =
+        r.dataNascimento || '';
+
+    document.getElementById('modalResponsavel').style.display = 'flex';
+}
+
+async function salvarResponsavel() {
+
+    const id =
+        document.getElementById('responsavelId').value;
+
+    const atualResponse =
+        await authFetch(`${API}/responsaveis/${id}`);
+
+    const atual = await atualResponse.json();
+
+    const dados = {
+        nome: document.getElementById('responsavelNome').value,
+        cpf: limparCpf(document.getElementById('responsavelCpf').value),
+        telefone: limparNumero(document.getElementById('responsavelTel').value),
+        endereco: document.getElementById('responsavelEndereco').value,
+        dataNascimento: document.getElementById('responsavelNascimento').value,
+        idAlunos: atual.alunos.map(a => a.id)
+    };
+
+    const response = await authFetch(
+        `${API}/responsaveis/${id}`,
+        {
+            method: 'PUT',
+            body: JSON.stringify(dados)
+        }
+    );
+
+    if (response.ok) {
+        toast('Responsável atualizado!');
+        fecharModal('modalResponsavel');
+
+        const alunoId =
+            document.getElementById('btnMatricularAluno')
+                .onclick
+                ?.toString()
+                .match(/\d+/);
+
+        if (alunoId) {
+            abrirPainelAluno(parseInt(alunoId[0]));
+        }
+
+    } else {
+        toast('Erro ao atualizar responsável.', 'erro');
+    }
 }
 
 // Carrega seção inicial
