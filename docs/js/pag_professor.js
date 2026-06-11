@@ -116,8 +116,6 @@ async function abrirBoletins(alocacaoId, disciplina, turma) {
     }
 
     const linhas = boletins.map(b => {
-        const nota = b.nota !== null && b.nota !== undefined ? b.nota.toFixed(1) : '—';
-        const freq = b.frequencia !== null && b.frequencia !== undefined ? b.frequencia.toFixed(1) + '%' : '—';
         const situacao = b.nota >= 7 ? 'aprovado' : b.nota < 5 ? 'reprovado' : 'recuperacao';
         const labelSit = b.nota >= 7 ? 'Aprovado' : b.nota < 5 ? 'Reprovado' : 'Em Recuperação';
         return `
@@ -128,13 +126,13 @@ async function abrirBoletins(alocacaoId, disciplina, turma) {
                     <input class="input-nota" type="number" min="0" max="10" step="0.1"
                         value="${b.nota !== null && b.nota !== undefined ? b.nota : ''}"
                         placeholder="—"
-                        onchange="salvarNota(${b.id}, this.value, ${b.frequencia})">
+                        onchange="salvarNota(${b.id}, ${b.aluno?.id}, ${alocacaoId}, this.value, ${b.frequencia ?? null})">
                 </td>
                 <td>
                     <input class="input-nota" type="number" min="0" max="100" step="0.1"
                         value="${b.frequencia !== null && b.frequencia !== undefined ? b.frequencia : ''}"
                         placeholder="—"
-                        onchange="salvarNota(${b.id}, ${b.nota}, this.value)">
+                        onchange="salvarNota(${b.id}, ${b.aluno?.id}, ${alocacaoId}, ${b.nota ?? null}, this.value)">
                 </td>
                 <td><span class="badge ${b.nota !== null ? situacao : ''}">${b.nota !== null ? labelSit : '—'}</span></td>
             </tr>
@@ -166,13 +164,18 @@ async function abrirBoletins(alocacaoId, disciplina, turma) {
     `;
 }
 
-async function salvarNota(boletimId, nota, frequencia) {
-    const notaNum = nota !== null && nota !== '' ? parseFloat(nota) : null;
-    const freqNum = frequencia !== null && frequencia !== '' ? parseFloat(frequencia) : null;
+async function salvarNota(boletimId, idAluno, idAlocacao, nota, frequencia) {
+    const notaNum = nota !== null && nota !== '' && nota !== 'null' ? parseFloat(nota) : null;
+    const freqNum = frequencia !== null && frequencia !== '' && frequencia !== 'null' ? parseFloat(frequencia) : null;
 
     const res = await authFetch(`${API}/boletins/${boletimId}`, {
         method: 'PUT',
-        body: JSON.stringify({ nota: notaNum, frequencia: freqNum })
+        body: JSON.stringify({
+            idAluno: idAluno,
+            idAlocacao: idAlocacao,
+            nota: notaNum,
+            frequencia: freqNum
+        })
     });
 
     if (!res.ok) alert('Erro ao salvar. Tente novamente.');
